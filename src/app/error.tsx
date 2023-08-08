@@ -1,6 +1,5 @@
 "use client"
 
-import { ToastAction } from "@/components/ui/toast"
 import { useToast } from "@/components/ui/use-toast"
 import Image from "next/image"
 import { useEffect } from "react"
@@ -13,11 +12,6 @@ export default function Error({ error, reset }: { error: Error; reset: () => voi
       variant: "destructive",
       title: "Oh, oh ! Une erreur s&aposest produite !",
       description: `Message d&aposerreur : ${error}`,
-      action: (
-        <ToastAction altText="Try again" onClick={() => reset()}>
-          Try again
-        </ToastAction>
-      ),
     })
   }, [error])
 
