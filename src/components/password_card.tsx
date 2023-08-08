@@ -60,8 +60,8 @@ export function PasswordCard({ password, recupPasswords }: { password: PassBdd; 
                 <h3>{password.login}</h3>
                 <Separator className="bg-slate-500 my-1" />
                 <div>
-                  {passwordText.map((line) => {
-                    return <h3>{line}</h3>
+                  {passwordText.map((line, index) => {
+                    return <h3 key={index * 1000000}>{line}</h3>
                   })}
                 </div>
               </PopoverContent>
