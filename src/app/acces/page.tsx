@@ -4,8 +4,8 @@ import { userAppService } from "@/services/userApp.service"
 import { currentUser } from "@clerk/nextjs"
 import { redirect } from "next/navigation"
 
+// @ts-expect-error
 export default async function AccesPage() {
-  // @ts-expect-error
   const user = await currentUser()
 
   if (!user?.primaryEmailAddressId) {
