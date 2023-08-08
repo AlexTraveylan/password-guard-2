@@ -1,9 +1,5 @@
-import styles from "@/components/styles/loader.module.css"
+import { Loader } from "@/components/shared/loader"
 
 export default function Loading() {
-  return (
-    <div className={styles.loader}>
-      <div className={styles.spinner}></div>
-    </div>
-  )
+  return <Loader />
 }
