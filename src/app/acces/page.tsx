@@ -8,11 +8,11 @@ export default async function AccesPage() {
   const user = await currentUser()
 
   if (!user?.primaryEmailAddressId) {
-    throw new Error("Pas d'adresse e-mail trouvé pour l'utilisateur.")
+    throw new Error("Pas d&aposadresse e-mail trouvé pour l&aposutilisateur.")
   }
   const primaryEmail = user.emailAddresses.find((email) => email.id == user.primaryEmailAddressId)
   if (!primaryEmail) {
-    throw new Error("Pas d'adresse e-mail trouvé pour l'utilisateur.")
+    throw new Error("Pas d&aposadresse e-mail trouvé pour l&aposutilisateur.")
   }
 
   const searchedUser = await userAppService.getByEmail(primaryEmail.emailAddress)
@@ -23,7 +23,7 @@ export default async function AccesPage() {
       <Card className="text-center">
         <CardHeader>
           <CardTitle>Choississez votre Master Password.</CardTitle>
-          <CardDescription>Assurez-vous d'avoir une connexion sécurisée lors de la création de votre master password.</CardDescription>
+          <CardDescription>Assurez-vous d&aposavoir une connexion sécurisée lors de la création de votre master password.</CardDescription>
         </CardHeader>
         <CardContent>
           <MasterFormCreate />

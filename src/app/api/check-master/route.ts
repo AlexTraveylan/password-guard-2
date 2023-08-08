@@ -9,17 +9,17 @@ export async function POST(request: NextRequest) {
   const user = await currentUser()
 
   if (!user?.primaryEmailAddressId) {
-    return NextResponse.json({ error: "Impossible de trouver l'e-mail." }, { status: 400 })
+    return NextResponse.json({ error: "Impossible de trouver l&apose-mail." }, { status: 400 })
   }
   const primaryEmail = user.emailAddresses.find((email) => email.id == user.primaryEmailAddressId)
   if (!primaryEmail) {
-    return NextResponse.json({ error: "Impossible de trouver l'e-mail." }, { status: 400 })
+    return NextResponse.json({ error: "Impossible de trouver l&apose-mail." }, { status: 400 })
   }
 
   const searchUser = await userAppService.getByEmail(primaryEmail.emailAddress)
 
   if (!searchUser) {
-    return NextResponse.json({ error: "Impossible de trouver l'utilisateur.." }, { status: 400 })
+    return NextResponse.json({ error: "Impossible de trouver l&aposutilisateur.." }, { status: 400 })
   }
 
   const salt = searchUser.salt

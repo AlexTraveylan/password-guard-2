@@ -65,7 +65,7 @@ export function AddPasswordForm2({
     } else {
       toast({
         variant: "destructive",
-        description: "Echec dans la création d'un nouveau mot de passe.",
+        description: "Echec dans la création d&aposun nouveau mot de passe.",
       })
     }
   }

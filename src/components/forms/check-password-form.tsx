@@ -19,7 +19,7 @@ export function CheckPasswordForm({ userEmail }: { userEmail: string }) {
     })
     const formData = new FormData(event.target as HTMLFormElement)
     const envSalt = process.env.NEXT_PUBLIC_SUPERMASTERSALT
-    if (!envSalt) return console.error("Probleme d'env")
+    if (!envSalt) return console.error("Probleme d&aposenv")
     const supersalt = envSalt + userEmail
 
     const hashedMaster = CryptoJS.SHA256(supersalt + String(formData.get("master"))).toString(CryptoJS.enc.Hex)
@@ -44,7 +44,7 @@ export function CheckPasswordForm({ userEmail }: { userEmail: string }) {
     const data: { error: string } = await response.json()
     toast({
       variant: "destructive",
-      title: "Oh, oh ! Une erreur s'est produite !",
+      title: "Oh, oh ! Une erreur s&aposest produite !",
       description: `Raison : ${data.error}`,
     })
 

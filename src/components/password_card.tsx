@@ -85,7 +85,7 @@ export function PasswordCard({ password, recupPasswords }: { password: PassBdd; 
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Êtes-vous vraiment certain ?</DialogTitle>
-                <DialogDescription>Cette action est définitive, il n'y a pas de retour en arrière possible.</DialogDescription>
+                <DialogDescription>Cette action est définitive, il n&aposy a pas de retour en arrière possible.</DialogDescription>
               </DialogHeader>
               <DialogFooter>
                 <Button variant="destructive" onClick={() => handleDeletePassword()} disabled={isDeleting}>

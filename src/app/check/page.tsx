@@ -10,11 +10,11 @@ export default async function ProtectedPage() {
   }
 
   if (!user?.primaryEmailAddressId) {
-    throw new Error("Pas d'adresse e-mail trouvé pour l'utilisateur.")
+    throw new Error("Pas d&aposadresse e-mail trouvé pour l&aposutilisateur.")
   }
   const primaryEmail = user.emailAddresses.find((email) => email.id == user.primaryEmailAddressId)
   if (!primaryEmail) {
-    throw new Error("Pas d'adresse e-mail trouvé pour l'utilisateur.")
+    throw new Error("Pas d&aposadresse e-mail trouvé pour l&aposutilisateur.")
   }
 
   return (

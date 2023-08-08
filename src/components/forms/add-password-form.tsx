@@ -29,7 +29,7 @@ export function AddPasswordForm({
     const login = String(formData.get("login"))
     const password = String(formData.get("password"))
 
-    // Chiffrez le mot de passe à l'aide d'une clé AES
+    // Chiffrez le mot de passe à l&aposaide d'une clé AES
     const aesKey = generateAESKey()
     const encryptedPasswordData = encryptPassword(password, aesKey)
     const encryptedPasswordDataJSON = JSON.stringify(encryptedPasswordData)
@@ -63,7 +63,7 @@ export function AddPasswordForm({
     } else {
       toast({
         variant: "destructive",
-        description: "Echec dans la création d'un nouveau mot de passe.",
+        description: "Echec dans la création d&aposun nouveau mot de passe.",
       })
     }
   }

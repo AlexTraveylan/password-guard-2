@@ -35,7 +35,7 @@ export function MasterFormCreate() {
         if (isMasterSecure && isConfirmEqualMaster) {
           if (user?.primaryEmailAddress) {
             const envSalt = process.env.NEXT_PUBLIC_SUPERMASTERSALT
-            if (!envSalt) return console.error("Probleme d'env")
+            if (!envSalt) return console.error("Probleme d&aposenv")
             const supersalt = envSalt + user.primaryEmailAddress.toString()
             const response = await fetch("api/user", {
               method: "POST",
@@ -110,7 +110,7 @@ export function MasterFormCreate() {
         )}
         {isPaste && (
           <div className="text-red-600 text-sm mt-2 text-center max-w-xs">
-            DANGER : Vous avez copié votre mot de passe, soyez certain d'être capable de le réecrire avant de valider.
+            DANGER : Vous avez copié votre mot de passe, soyez certain d&aposêtre capable de le réecrire avant de valider.
           </div>
         )}
       </>
