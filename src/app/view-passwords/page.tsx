@@ -58,7 +58,7 @@ export default function ProtectedPage() {
   }, [])
 
   if (isLoading) {
-    return <Loader show={true} />
+    return <Loader />
   }
 
   if (!user || !isAcces) {
