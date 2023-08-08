@@ -1,5 +1,5 @@
 "use client"
-import { MinusCircleIcon, PlusCircleIcon } from "lucide-react"
+import { MinusCircleIcon, PlusCircleIcon } from "../../node_modules/lucide-react"
 import { useState } from "react"
 import { AddPasswordForm } from "./forms/add-password-form"
 

@@ -1,5 +1,5 @@
-import { PlusCircleIcon } from "lucide-react"
 import { Dispatch, SetStateAction } from "react"
+import { PlusCircleIcon } from "../../node_modules/lucide-react"
 import { Card } from "./ui/card"
 
 export function PlusPasswordCard({ setIsShow }: { setIsShow: Dispatch<SetStateAction<boolean>> }) {

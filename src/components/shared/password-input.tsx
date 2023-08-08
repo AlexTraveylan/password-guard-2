@@ -1,7 +1,7 @@
-import { Eye, EyeOff } from "lucide-react"
-import { ComponentPropsWithoutRef, useState } from "react"
-import { Input } from "@/components/ui/input"
 import styles from "@/components/styles/password-input.module.css"
+import { Input } from "@/components/ui/input"
+import { ComponentPropsWithoutRef, useState } from "react"
+import { Eye, EyeOff } from "../../../node_modules/lucide-react"
 
 type InputProps = ComponentPropsWithoutRef<"input"> & {
   label: string

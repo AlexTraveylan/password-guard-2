@@ -1,5 +1,5 @@
 "use client"
-import { Key, User } from "lucide-react"
+import { Key, User } from "../../node_modules/lucide-react"
 import { useState } from "react"
 import { Button } from "./ui/Button"
 

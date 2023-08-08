@@ -7,10 +7,10 @@ import { toast } from "@/components/ui/use-toast"
 import { encryptPassword, generateAESKey, publicKeyEncrypt } from "@/services/security.service"
 import { addPasswordSchema } from "@/zod/schema.example"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { MinusCircle, Send } from "lucide-react"
 import { Dispatch, SetStateAction } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
+import { MinusCircle, Send } from "../../../node_modules/lucide-react"
 
 export function AddPasswordForm2({
   recupPasswords,

@@ -6,9 +6,9 @@ import { Button } from "@/components/ui/Button"
 import { toast } from "@/components/ui/use-toast"
 import { useUser } from "@clerk/nextjs"
 import CryptoJS from "crypto-js"
-import { Lock } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useRef, useState } from "react"
+import { Lock } from "../../../node_modules/lucide-react"
 
 export function MasterFormCreate() {
   const { isLoaded, isSignedIn, user } = useUser()
