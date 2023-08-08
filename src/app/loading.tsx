@@ -1,5 +1,5 @@
 import { Loader } from "@/components/shared/loader"
 
-export default async function Loading() {
+export default function Loading() {
   return <Loader show={true} />
 }
