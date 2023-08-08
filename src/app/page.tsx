@@ -9,6 +9,7 @@ export default function Home() {
         <CardDescription>One password for protect all others.</CardDescription>
       </CardHeader>
       <CardContent>
+        {/* @ts-expect-error */}
         <BtnAccesIfLogged />
       </CardContent>
     </Card>
