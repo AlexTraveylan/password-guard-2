@@ -71,7 +71,11 @@ export default function ProtectedPage() {
         {isAcces && passwords.length > 0 && (
           <>
             {passwords.map((password) => {
-              return <PasswordCard key={password.id} password={password} recupPasswords={recupPasswords} />
+              return (
+                <div key={password.id}>
+                  <PasswordCard password={password} recupPasswords={recupPasswords} />
+                </div>
+              )
             })}
           </>
         )}

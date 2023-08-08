@@ -1,18 +1,11 @@
 "use client"
 
-import { useToast } from "@/components/ui/use-toast"
 import Image from "next/image"
 import { useEffect } from "react"
 
 export default function Error({ error, reset }: { error: Error; reset: () => void }) {
-  const { toast } = useToast()
   useEffect(() => {
-    console.error(error)
-    toast({
-      variant: "destructive",
-      title: "Oh, oh ! Une erreur s&aposest produite !",
-      description: `Message d&aposerreur : ${error}`,
-    })
+    console.log(error)
   }, [error])
 
   return (
