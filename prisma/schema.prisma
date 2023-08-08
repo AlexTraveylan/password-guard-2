@@ -1,30 +1,32 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-// npm i
-// Next steps:
-// 1. Set the DATABASE_URL in the .env file to point to your existing database. If your database has no tables yet, read https://pris.ly/d/getting-started
-// 2. Set the provider of the datasource block in schema.prisma to match your database: postgresql, mysql, sqlite, sqlserver, mongodb or cockroachdb.
-// 3. Run prisma db pull to turn your database schema into a Prisma schema.
-// 4. Run prisma generate to generate the Prisma Client. You can then start querying your database.
-
-// commands prisma : 
-// npx prisma generate
-// npx prisma migrate dev 
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-model ArticleExample {
-  id        String   @id @default(uuid())
-  title     String
-  content   String
-  published Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model GuardedPassword {
+  id              Int     @id @default(autoincrement())
+  title           String  @db.VarChar(255)
+  login           String  @db.VarChar(255)
+  iv              String
+  password        Bytes
+  encryptedAESKey Bytes
+  userId          Int
+  user            UserApp @relation("user_app_to_guarded_password", fields: [userId], references: [id])
+}
+
+/// Ajouter un champ derniere tentative de connexion ou un modele ?
+/// Un modèle pour représenter les utilisateurs de l'application
+model UserApp {
+  id               Int               @id @default(autoincrement())
+  name             String
+  email            String            @unique
+  masterPassword   Bytes
+  salt             String
+  publicKey        Bytes
+  privateKey       Bytes
+  guardedPasswords GuardedPassword[] @relation("user_app_to_guarded_password")
 }
