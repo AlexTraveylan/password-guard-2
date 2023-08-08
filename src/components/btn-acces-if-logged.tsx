@@ -3,7 +3,7 @@ import Link from "next/link"
 import { Description } from "./description"
 import { Button } from "./ui/Button"
 
-export default async function BtnAccesIfLogged() {
+export const BtnAccesIfLogged = async () => {
   const user = await currentUser()
 
   if (!user) {

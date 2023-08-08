@@ -4,7 +4,6 @@ import { userAppService } from "@/services/userApp.service"
 import { currentUser } from "@clerk/nextjs"
 import { redirect } from "next/navigation"
 
-// @ts-expect-error
 export default async function AccesPage() {
   const user = await currentUser()
 

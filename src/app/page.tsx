@@ -1,4 +1,4 @@
-import BtnAccesIfLogged from "@/components/btn-acces-if-logged"
+import { BtnAccesIfLogged } from "@/components/btn-acces-if-logged"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function Home() {
@@ -9,7 +9,6 @@ export default function Home() {
         <CardDescription>One password for protect all others.</CardDescription>
       </CardHeader>
       <CardContent>
-        {/* @ts-expect-error */}
         <BtnAccesIfLogged />
       </CardContent>
     </Card>
