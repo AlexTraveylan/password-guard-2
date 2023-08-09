@@ -10,7 +10,7 @@ export default function Error({ error, reset }: { error: Error; reset: () => voi
 
   return (
     <div className="text-center">
-      <h1>Une erreur s&aposest produite</h1>
+      <h1>Une erreur s'est produite</h1>
       <Image src="/voleur.jpg" width={700} height={700} alt="Voleur assomé, coffre intact." />
     </div>
   )

@@ -1,5 +1,6 @@
 "use client"
 
+import { PassBdd } from "@/components/types/types"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
@@ -12,25 +13,27 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { MinusCircle, Send } from "../../../node_modules/lucide-react"
 
-export function AddPasswordForm2({
+export function EditPassword({
   recupPasswords,
-  setIsShow,
+  setIsEditing,
+  password,
 }: {
-  recupPasswords: () => Promise<void>
-  setIsShow: Dispatch<SetStateAction<boolean>>
+  recupPasswords: () => void
+  setIsEditing: Dispatch<SetStateAction<boolean>>
+  password: PassBdd
 }) {
   const form = useForm<z.infer<typeof addPasswordSchema>>({
     resolver: zodResolver(addPasswordSchema),
     defaultValues: {
-      titre: "",
-      login: "",
+      titre: `${password.title}`,
+      login: `${password.login}`,
       password: "",
     },
   })
 
   async function handleSubmit(values: z.infer<typeof addPasswordSchema>) {
     toast({
-      description: "Création du nouveau mot de passe en cours...",
+      description: "Modification en cours...",
     })
 
     const aesKey = generateAESKey()
@@ -47,8 +50,8 @@ export function AddPasswordForm2({
     const publicKey = data.publicKey
     const encryptedAESKey = publicKeyEncrypt(aesKey, publicKey)
 
-    const response2 = await fetch("/api/passwords", {
-      method: "POST",
+    const response2 = await fetch(`/api/passwords/${password.id}`, {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
@@ -58,14 +61,14 @@ export function AddPasswordForm2({
 
     if (response2.ok) {
       recupPasswords()
-      setIsShow(false)
+      setIsEditing(false)
       toast({
-        description: "Mot de passe crée avec succes.",
+        description: "Mot de passe modifié avec succes.",
       })
     } else {
       toast({
         variant: "destructive",
-        description: "Echec dans la création d&aposun nouveau mot de passe.",
+        description: "Echec dans la modification du mot de passe.",
       })
     }
   }
@@ -121,7 +124,7 @@ export function AddPasswordForm2({
               <MinusCircle
                 className="cursor-pointer hover:text-red-800 dark:hover:text-red-400"
                 strokeWidth={1.3}
-                onClick={() => setIsShow(false)}
+                onClick={() => setIsEditing(false)}
               />
               <button type="submit">
                 <Send className="hover:text-green-800 dark:hover:text-green-400" type="submit" strokeWidth={1.3} />

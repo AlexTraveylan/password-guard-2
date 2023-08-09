@@ -1,6 +1,6 @@
 "use client"
 
-import { AddPasswordForm2 } from "@/components/forms/add-password-form-2"
+import { AddPasswordForm } from "@/components/forms/add-password-form"
 import { PasswordCard } from "@/components/password_card"
 import { PlusPasswordCard } from "@/components/plus-password-card"
 import AccessDenied from "@/components/shared/access-denied"
@@ -79,7 +79,7 @@ export default function ProtectedPage() {
             })}
           </>
         )}
-        {isShow ? <AddPasswordForm2 recupPasswords={recupPasswords} setIsShow={setIsShow} /> : <PlusPasswordCard setIsShow={setIsShow} />}
+        {isShow ? <AddPasswordForm recupPasswords={recupPasswords} setIsShow={setIsShow} /> : <PlusPasswordCard setIsShow={setIsShow} />}
       </div>
     </div>
   )

@@ -6,14 +6,15 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { useToast } from "@/components/ui/use-toast"
 import { useState } from "react"
 import { Eye, PenBox, Trash2 } from "../../node_modules/lucide-react"
+import { EditPassword } from "./forms/edit-password-form"
 import { Button } from "./ui/Button"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog"
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover"
 import { Separator } from "./ui/separator"
 
 export function PasswordCard({ password, recupPasswords }: { password: PassBdd; recupPasswords: () => void }) {
-  const [show, setShow] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
+  const [isEditing, setIsEditing] = useState(false)
   const { toast } = useToast()
   const passwordText = splitPassword(password.password, [])
 
@@ -41,6 +42,10 @@ export function PasswordCard({ password, recupPasswords }: { password: PassBdd; 
       })
     }
     setIsDeleting(false)
+  }
+
+  if (isEditing) {
+    return <EditPassword setIsEditing={setIsEditing} password={password} recupPasswords={recupPasswords} />
   }
 
   return (
@@ -73,7 +78,9 @@ export function PasswordCard({ password, recupPasswords }: { password: PassBdd; 
           <CopyToClipboardButton password={password.password} btnType="password" />
         </CardContent>
         <CardFooter className="flex flex-row justify-end gap-5">
-          <PenBox strokeWidth={1.3} size={23} />
+          <div onClick={() => setIsEditing(true)}>
+            <PenBox strokeWidth={1.3} size={23} />
+          </div>
           <Dialog>
             <DialogTrigger>
               <Trash2

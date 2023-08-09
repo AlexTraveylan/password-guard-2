@@ -16,12 +16,13 @@ class GuardedPasswordService {
     return guardedPassword
   }
 
-  async updateGuardPassword({ id, title, login, password, encryptedAESKey }: Omit<GuardedPassword, "userId">) {
+  async updateGuardPassword({ id, title, login, iv, password, encryptedAESKey }: Omit<GuardedPassword, "userId">) {
     const guardedPassword = await prisma.guardedPassword.update({
       where: { id },
       data: {
         title,
         login,
+        iv,
         password,
         encryptedAESKey,
       },

@@ -39,6 +39,7 @@ dev.db-journal
 
 # typescript
 *.tsbuildinfo
+eslintrc.json
 next-env.d.ts
 
 # IDE 

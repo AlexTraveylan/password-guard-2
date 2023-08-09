@@ -13,10 +13,6 @@ export function PasswordInput({ label, validate, validationMessage, ...props }: 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
   const [isValid, setIsValid] = useState(true)
 
-  function togglePasswordVisibility(visible: boolean) {
-    setIsPasswordVisible(visible)
-  }
-
   function validatePassword(password: string) {
     if (validate) {
       const isValidated = validate(password)
@@ -32,20 +28,14 @@ export function PasswordInput({ label, validate, validationMessage, ...props }: 
       <div className="inline-flex items-center gap-3">
         <Input
           id="default-input"
-          className={`border rounded-lg block px-3 py-1 ${!isValid && styles.notValid}`}
+          className={`border text-base rounded-lg block px-3 py-1 ${!isValid && styles.notValid}`}
           type={isPasswordVisible ? "text" : "password"}
           onChange={(e) => {
             validatePassword(e.target.value)
           }}
           {...props}
         />
-        <div
-          onMouseDown={() => togglePasswordVisibility(true)}
-          onMouseUp={() => togglePasswordVisibility(false)}
-          onMouseLeave={() => togglePasswordVisibility(false)}
-        >
-          {isPasswordVisible ? <Eye /> : <EyeOff />}
-        </div>
+        <div onClick={() => setIsPasswordVisible(!isPasswordVisible)}>{isPasswordVisible ? <Eye /> : <EyeOff />}</div>
       </div>
       {!isValid && (
         <p className="text-red-500 text-sm mt-1 text-center">

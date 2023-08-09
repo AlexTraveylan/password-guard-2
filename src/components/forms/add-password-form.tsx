@@ -1,37 +1,40 @@
 "use client"
-import { Input } from "@/components/shared/input"
-import { Button } from "@/components/ui/Button"
-import { useToast } from "@/components/ui/use-toast"
+
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { toast } from "@/components/ui/use-toast"
 import { encryptPassword, generateAESKey, publicKeyEncrypt } from "@/services/security.service"
-import { Dispatch, SetStateAction, useRef } from "react"
+import { addPasswordSchema } from "@/zod/schema.example"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Dispatch, SetStateAction } from "react"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { MinusCircle, Send } from "../../../node_modules/lucide-react"
 
 export function AddPasswordForm({
-  isShow,
-  setIsShow,
   recupPasswords,
+  setIsShow,
 }: {
-  isShow: boolean
-  setIsShow: Dispatch<SetStateAction<boolean>>
   recupPasswords: () => Promise<void>
+  setIsShow: Dispatch<SetStateAction<boolean>>
 }) {
-  const formRef = useRef<HTMLFormElement>(null)
-  const { toast } = useToast()
+  const form = useForm<z.infer<typeof addPasswordSchema>>({
+    resolver: zodResolver(addPasswordSchema),
+    defaultValues: {
+      titre: "",
+      login: "",
+      password: "",
+    },
+  })
 
-  async function handleSubmit(e: React.MouseEvent) {
-    e.preventDefault()
+  async function handleSubmit(values: z.infer<typeof addPasswordSchema>) {
+    toast({
+      description: "Création du nouveau mot de passe en cours...",
+    })
 
-    if (!formRef.current) {
-      return
-    }
-
-    const formData = new FormData(formRef.current)
-    const titre = String(formData.get("titre"))
-    const login = String(formData.get("login"))
-    const password = String(formData.get("password"))
-
-    // Chiffrez le mot de passe à l&aposaide d'une clé AES
     const aesKey = generateAESKey()
-    const encryptedPasswordData = encryptPassword(password, aesKey)
+    const encryptedPasswordData = encryptPassword(values.password, aesKey)
     const encryptedPasswordDataJSON = JSON.stringify(encryptedPasswordData)
 
     const response = await fetch("/api/get-public-key")
@@ -41,7 +44,6 @@ export function AddPasswordForm({
 
     const data: { message: string; publicKey: string } = await response.json()
 
-    // Chiffrez la clé AES à l'aide de la clé publique RSA de l'utilisateur
     const publicKey = data.publicKey
     const encryptedAESKey = publicKeyEncrypt(aesKey, publicKey)
 
@@ -51,7 +53,7 @@ export function AddPasswordForm({
         "Content-Type": "application/json",
       },
       credentials: "include",
-      body: JSON.stringify({ titre, login, encryptedPasswordDataJSON, encryptedAESKey }),
+      body: JSON.stringify({ titre: values.titre, login: values.login, encryptedPasswordDataJSON, encryptedAESKey }),
     })
 
     if (response2.ok) {
@@ -68,18 +70,66 @@ export function AddPasswordForm({
     }
   }
 
-  if (!isShow) {
-    return <></>
-  }
-
   return (
-    <form ref={formRef} className="flex flex-col items-center shadow-md p-5 rounded-md">
-      <Input label="Titre" type="text" name="titre" />
-      <Input label="Login" type="text" name="login" />
-      <Input label="Password" type="password" name="password" />
-      <div onClick={(e) => handleSubmit(e)} className="text-center">
-        <Button>Nouveau mot de passe</Button>
-      </div>
-    </form>
+    <div className="w-[240px] h-[240px]">
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(handleSubmit)}>
+          <Card>
+            <CardHeader>
+              <CardTitle>
+                <FormField
+                  control={form.control}
+                  name="titre"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input placeholder="Titre" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-1">
+              <FormField
+                control={form.control}
+                name="login"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input placeholder="Login" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input placeholder="Mot de passe" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </CardContent>
+            <CardFooter className="flex justify-between">
+              <MinusCircle
+                className="cursor-pointer hover:text-red-800 dark:hover:text-red-400"
+                strokeWidth={1.3}
+                onClick={() => setIsShow(false)}
+              />
+              <button type="submit">
+                <Send className="hover:text-green-800 dark:hover:text-green-400" type="submit" strokeWidth={1.3} />
+              </button>
+            </CardFooter>
+          </Card>
+        </form>
+      </Form>
+    </div>
   )
 }

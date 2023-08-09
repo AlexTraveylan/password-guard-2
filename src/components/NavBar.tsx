@@ -1,7 +1,7 @@
-import { ThemeToggle } from "@/components/ThemeToggle"
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs"
 import Image from "next/image"
 import Link from "next/link"
+import { SwitchToggle } from "./switch-theme"
 import { Button } from "./ui/Button"
 
 export function NavBar() {
@@ -11,18 +11,16 @@ export function NavBar() {
         <Link href="/">
           <Image className="cursor-pointer" src="/logo2.png" width={40} height={40} alt="Logo" />
         </Link>
-        <div className="flex md:order-2">
-          <div className="flex items-center gap-x-3 cursor-pointer">
-            <ThemeToggle />
-            <SignedIn>
-              <UserButton afterSignOutUrl="/" userProfileUrl="/profile" />
-            </SignedIn>
-            <SignedOut>
-              <SignInButton mode="modal">
-                <Button>Sign in</Button>
-              </SignInButton>
-            </SignedOut>
-          </div>
+        <div className="flex items-center gap-4">
+          <SwitchToggle />
+          <SignedIn>
+            <UserButton afterSignOutUrl="/" userProfileUrl="/profile" />
+          </SignedIn>
+          <SignedOut>
+            <SignInButton mode="modal">
+              <Button>Sign in</Button>
+            </SignInButton>
+          </SignedOut>
         </div>
       </div>
     </nav>
