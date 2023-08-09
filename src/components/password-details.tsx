@@ -38,7 +38,7 @@ export function PasswordDetail({ password, setIsShowDetail }: { password: PassBd
       </CardContent>
       <CardFooter>
         <div onClick={() => setIsShowDetail(false)}>
-          <ArrowLeft className="cursor-pointer" size={23} strokeWidth={1.3} />
+          <ArrowLeft className="cursor-pointer hover:text-red-800 dark:hover:text-red-400" size={23} strokeWidth={1.3} />
         </div>
       </CardFooter>
     </Card>
