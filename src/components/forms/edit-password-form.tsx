@@ -11,7 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Dispatch, SetStateAction } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { MinusCircle, Send } from "../../../node_modules/lucide-react"
+import { ArrowLeft, Send } from "../../../node_modules/lucide-react"
 
 export function EditPassword({
   recupPasswords,
@@ -121,7 +121,7 @@ export function EditPassword({
               />
             </CardContent>
             <CardFooter className="flex justify-between">
-              <MinusCircle
+              <ArrowLeft
                 className="cursor-pointer hover:text-red-800 dark:hover:text-red-400"
                 strokeWidth={1.3}
                 onClick={() => setIsEditing(false)}

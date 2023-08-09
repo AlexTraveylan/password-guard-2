@@ -1,22 +1,20 @@
 "use client"
 import CopyToClipboardButton from "@/components/clipBoardButton"
-import { splitPassword } from "@/components/functions/modify-password"
 import { PassBdd } from "@/components/types/types"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { useToast } from "@/components/ui/use-toast"
 import { useState } from "react"
 import { Eye, PenBox, Trash2 } from "../../node_modules/lucide-react"
 import { EditPassword } from "./forms/edit-password-form"
+import { PasswordDetail } from "./password-details"
 import { Button } from "./ui/Button"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog"
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover"
-import { Separator } from "./ui/separator"
 
 export function PasswordCard({ password, recupPasswords }: { password: PassBdd; recupPasswords: () => void }) {
   const [isDeleting, setIsDeleting] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
+  const [isShowDetail, setIsShowDetail] = useState(false)
   const { toast } = useToast()
-  const passwordText = splitPassword(password.password, [])
 
   async function handleDeletePassword() {
     setIsDeleting(true)
@@ -48,32 +46,25 @@ export function PasswordCard({ password, recupPasswords }: { password: PassBdd; 
     return <EditPassword setIsEditing={setIsEditing} password={password} recupPasswords={recupPasswords} />
   }
 
+  if (isShowDetail) {
+    return <PasswordDetail password={password} setIsShowDetail={setIsShowDetail} />
+  }
+
   return (
     <div key={password.id} className="relative">
-      <Card className="w-[240px] h-[240px]">
+      <Card className="w-[240px] h-[240px] flex flex-col justify-between">
         <CardHeader>
           <CardTitle>
             <p>{password.title}</p>
           </CardTitle>
           <CardDescription className="flex flex-row justify-between">
             <p>Carte n°{password.id}</p>
-            <Popover>
-              <PopoverTrigger>
-                <Eye strokeWidth={1.3} size={23} />
-              </PopoverTrigger>
-              <PopoverContent className="flex flex-col items-center">
-                <h3>{password.login}</h3>
-                <Separator className="bg-slate-500 my-1" />
-                <div>
-                  {passwordText.map((line, index) => {
-                    return <h3 key={index * 1000000}>{line}</h3>
-                  })}
-                </div>
-              </PopoverContent>
-            </Popover>
+            <div onClick={() => setIsShowDetail(true)}>
+              <Eye className="cursor-pointer" strokeWidth={1.3} size={23} />
+            </div>
           </CardDescription>
         </CardHeader>
-        <CardContent className="flex flex-row justify-center gap-3 py-3">
+        <CardContent className="flex flex-row justify-center gap-3">
           <CopyToClipboardButton password={password.login} btnType="user" />
           <CopyToClipboardButton password={password.password} btnType="password" />
         </CardContent>
@@ -92,7 +83,7 @@ export function PasswordCard({ password, recupPasswords }: { password: PassBdd; 
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Êtes-vous vraiment certain ?</DialogTitle>
-                <DialogDescription>Cette action est définitive, il n&aposy a pas de retour en arrière possible.</DialogDescription>
+                <DialogDescription>Cette action est définitive, il n'y a pas de retour en arrière possible.</DialogDescription>
               </DialogHeader>
               <DialogFooter>
                 <Button variant="destructive" onClick={() => handleDeletePassword()} disabled={isDeleting}>
