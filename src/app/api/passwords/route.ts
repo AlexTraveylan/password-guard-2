@@ -44,27 +44,33 @@ export async function GET(request: NextRequest) {
 // Création d'un mot de passe
 export async function POST(request: NextRequest) {
   const user = await currentUser()
-  if (!user?.primaryEmailAddressId) {
-    return NextResponse.json({ error: "Impossible de trouver l'e-mail." }, { status: 400 })
+  let cUser
+  if (user) {
+    if (!user?.primaryEmailAddressId) {
+      return NextResponse.json({ error: "Impossible de trouver l'e-mail." }, { status: 400 })
+    }
+
+    const primaryEmail = user.emailAddresses.find((email) => email.id == user.primaryEmailAddressId)
+    if (!primaryEmail) {
+      return NextResponse.json({ error: "Impossible de trouver l'apose-mail." }, { status: 400 })
+    }
+
+    const cookieStore = cookies()
+    const accessToken = cookieStore.get("accessToken")
+    if (!accessToken) {
+      return NextResponse.json({ error: "Pas de token d'acces dans les cookies." }, { status: 400 })
+    }
+    try {
+      const decoded = verifyAccessToken(accessToken.value)
+    } catch (err) {
+      return NextResponse.json({ error: "Le token n'est pas valide ou à expiré." }, { status: 400 })
+    }
+
+    cUser = await userAppService.getByEmail(primaryEmail.emailAddress)
+  } else {
+    cUser = await userAppService.getByEmail("noemail@sandbox.com")
   }
 
-  const primaryEmail = user.emailAddresses.find((email) => email.id == user.primaryEmailAddressId)
-  if (!primaryEmail) {
-    return NextResponse.json({ error: "Impossible de trouver l'apose-mail." }, { status: 400 })
-  }
-
-  const cookieStore = cookies()
-  const accessToken = cookieStore.get("accessToken")
-  if (!accessToken) {
-    return NextResponse.json({ error: "Pas de token d'acces dans les cookies." }, { status: 400 })
-  }
-  try {
-    const decoded = verifyAccessToken(accessToken.value)
-  } catch (err) {
-    return NextResponse.json({ error: "Le token n'est pas valide ou à expiré." }, { status: 400 })
-  }
-
-  const cUser = await userAppService.getByEmail(primaryEmail.emailAddress)
   if (!cUser) {
     return NextResponse.json({ error: "Impossible de trouver l'user." }, { status: 400 })
   }

@@ -10,7 +10,7 @@ import { decryptPassword, privateKeyDecrypt } from "@/services/security.service"
 import { useUser } from "@clerk/nextjs"
 import { useEffect, useState } from "react"
 
-export default function ProtectedPage() {
+export default function ViewPasswordsPage() {
   const { isLoaded, isSignedIn, user } = useUser()
   const [isLoading, setIsLoading] = useState(true)
   const [isAcces, setIsAcces] = useState(false)
@@ -66,21 +66,19 @@ export default function ProtectedPage() {
   }
 
   return (
-    <div className="flex flex-col items-center">
-      <div className="flex flex-row gap-3 flex-wrap justify-center my-5">
-        {isAcces && passwords.length > 0 && (
-          <>
-            {passwords.map((password) => {
-              return (
-                <div key={password.id}>
-                  <PasswordCard password={password} recupPasswords={recupPasswords} />
-                </div>
-              )
-            })}
-          </>
-        )}
-        {isShow ? <AddPasswordForm recupPasswords={recupPasswords} setIsShow={setIsShow} /> : <PlusPasswordCard setIsShow={setIsShow} />}
-      </div>
+    <div className="flex flex-row gap-3 flex-wrap justify-center my-5">
+      {isAcces && passwords.length > 0 && (
+        <>
+          {passwords.map((password) => {
+            return (
+              <div key={password.id}>
+                <PasswordCard password={password} />
+              </div>
+            )
+          })}
+        </>
+      )}
+      {isShow ? <AddPasswordForm setIsShow={setIsShow} /> : <PlusPasswordCard setIsShow={setIsShow} />}
     </div>
   )
 }

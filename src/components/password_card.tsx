@@ -9,11 +9,13 @@ import { EditPassword } from "./forms/edit-password-form"
 import { PasswordDetail } from "./password-details"
 import { Button } from "./ui/Button"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog"
+import { useRouter } from "next/navigation"
 
-export function PasswordCard({ password, recupPasswords }: { password: PassBdd; recupPasswords: () => void }) {
+export function PasswordCard({ password }: { password: PassBdd }) {
   const [isDeleting, setIsDeleting] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
   const [isShowDetail, setIsShowDetail] = useState(false)
+  const router = useRouter()
   const { toast } = useToast()
 
   async function handleDeletePassword() {
@@ -29,7 +31,7 @@ export function PasswordCard({ password, recupPasswords }: { password: PassBdd; 
     })
 
     if (response.ok) {
-      recupPasswords()
+      router.refresh()
       toast({
         description: "Suppression effectuée avec succès.",
       })
@@ -43,7 +45,7 @@ export function PasswordCard({ password, recupPasswords }: { password: PassBdd; 
   }
 
   if (isEditing) {
-    return <EditPassword setIsEditing={setIsEditing} password={password} recupPasswords={recupPasswords} />
+    return <EditPassword setIsEditing={setIsEditing} password={password} />
   }
 
   if (isShowDetail) {

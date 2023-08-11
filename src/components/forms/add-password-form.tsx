@@ -7,18 +7,14 @@ import { toast } from "@/components/ui/use-toast"
 import { encryptPassword, generateAESKey, publicKeyEncrypt } from "@/services/security.service"
 import { addPasswordSchema } from "@/zod/schema.example"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useRouter } from "next/navigation"
 import { Dispatch, SetStateAction } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { MinusCircle, Send } from "../../../node_modules/lucide-react"
 
-export function AddPasswordForm({
-  recupPasswords,
-  setIsShow,
-}: {
-  recupPasswords: () => Promise<void>
-  setIsShow: Dispatch<SetStateAction<boolean>>
-}) {
+export function AddPasswordForm({ setIsShow }: { setIsShow: Dispatch<SetStateAction<boolean>> }) {
+  const router = useRouter()
   const form = useForm<z.infer<typeof addPasswordSchema>>({
     resolver: zodResolver(addPasswordSchema),
     defaultValues: {
@@ -57,7 +53,7 @@ export function AddPasswordForm({
     })
 
     if (response2.ok) {
-      recupPasswords()
+      router.refresh()
       setIsShow(false)
       toast({
         description: "Mot de passe crée avec succes.",

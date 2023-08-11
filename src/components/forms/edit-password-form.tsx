@@ -8,20 +8,14 @@ import { toast } from "@/components/ui/use-toast"
 import { encryptPassword, generateAESKey, publicKeyEncrypt } from "@/services/security.service"
 import { addPasswordSchema } from "@/zod/schema.example"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useRouter } from "next/navigation"
 import { Dispatch, SetStateAction } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { ArrowLeft, Send } from "../../../node_modules/lucide-react"
 
-export function EditPassword({
-  recupPasswords,
-  setIsEditing,
-  password,
-}: {
-  recupPasswords: () => void
-  setIsEditing: Dispatch<SetStateAction<boolean>>
-  password: PassBdd
-}) {
+export function EditPassword({ setIsEditing, password }: { setIsEditing: Dispatch<SetStateAction<boolean>>; password: PassBdd }) {
+  const router = useRouter()
   const form = useForm<z.infer<typeof addPasswordSchema>>({
     resolver: zodResolver(addPasswordSchema),
     defaultValues: {
@@ -60,7 +54,7 @@ export function EditPassword({
     })
 
     if (response2.ok) {
-      recupPasswords()
+      router.refresh()
       setIsEditing(false)
       toast({
         description: "Mot de passe modifié avec succes.",

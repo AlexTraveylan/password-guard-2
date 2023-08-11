@@ -26,18 +26,18 @@ export function Description() {
       {isDescrHidden ? (
         <Button onClick={() => toggleDescr()}>Voir description</Button>
       ) : (
-        <>
+        <div className="flex flex-col gap-3">
           <Button onClick={() => toggleDescr()}>
             <Undo2 />
           </Button>
-          <div className="flex flex-col items-begin justify-center text-center">
+          <ul>
             {descriptions.map((desc) => (
-              <div className="my-3" key={desc}>
+              <li className="my-2" key={desc}>
                 {desc}
-              </div>
+              </li>
             ))}
-          </div>
-        </>
+          </ul>
+        </div>
       )}
     </div>
   )
