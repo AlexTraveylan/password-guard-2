@@ -55,7 +55,7 @@ export default function ViewPasswordsPage() {
 
   useEffect(() => {
     checkIsUserLogged()
-  }, [])
+  }, [isShow])
 
   if (isLoading) {
     return <Loader />
@@ -72,13 +72,13 @@ export default function ViewPasswordsPage() {
           {passwords.map((password) => {
             return (
               <div key={password.id}>
-                <PasswordCard password={password} />
+                <PasswordCard password={password} recupPasswords={recupPasswords} />
               </div>
             )
           })}
         </>
       )}
-      {isShow ? <AddPasswordForm setIsShow={setIsShow} /> : <PlusPasswordCard setIsShow={setIsShow} />}
+      {isShow ? <AddPasswordForm setIsShow={setIsShow} recupPasswords={recupPasswords} /> : <PlusPasswordCard setIsShow={setIsShow} />}
     </div>
   )
 }

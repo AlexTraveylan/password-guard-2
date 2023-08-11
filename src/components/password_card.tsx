@@ -3,15 +3,15 @@ import CopyToClipboardButton from "@/components/clipBoardButton"
 import { PassBdd } from "@/components/types/types"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { useToast } from "@/components/ui/use-toast"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { Eye, PenBox, Trash2 } from "../../node_modules/lucide-react"
 import { EditPassword } from "./forms/edit-password-form"
 import { PasswordDetail } from "./password-details"
 import { Button } from "./ui/Button"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog"
-import { useRouter } from "next/navigation"
 
-export function PasswordCard({ password }: { password: PassBdd }) {
+export function PasswordCard({ password, recupPasswords = undefined }: { password: PassBdd; recupPasswords: undefined | (() => void) }) {
   const [isDeleting, setIsDeleting] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
   const [isShowDetail, setIsShowDetail] = useState(false)
@@ -31,10 +31,14 @@ export function PasswordCard({ password }: { password: PassBdd }) {
     })
 
     if (response.ok) {
-      router.refresh()
       toast({
         description: "Suppression effectuée avec succès.",
       })
+      if (recupPasswords != undefined) {
+        recupPasswords()
+      } else {
+        router.refresh()
+      }
     } else {
       toast({
         variant: "destructive",
@@ -45,7 +49,7 @@ export function PasswordCard({ password }: { password: PassBdd }) {
   }
 
   if (isEditing) {
-    return <EditPassword setIsEditing={setIsEditing} password={password} />
+    return <EditPassword setIsEditing={setIsEditing} password={password} recupPasswords={recupPasswords} />
   }
 
   if (isShowDetail) {

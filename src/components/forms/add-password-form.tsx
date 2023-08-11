@@ -13,7 +13,13 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { MinusCircle, Send } from "../../../node_modules/lucide-react"
 
-export function AddPasswordForm({ setIsShow }: { setIsShow: Dispatch<SetStateAction<boolean>> }) {
+export function AddPasswordForm({
+  setIsShow,
+  recupPasswords = undefined,
+}: {
+  setIsShow: Dispatch<SetStateAction<boolean>>
+  recupPasswords: undefined | (() => void)
+}) {
   const router = useRouter()
   const form = useForm<z.infer<typeof addPasswordSchema>>({
     resolver: zodResolver(addPasswordSchema),
@@ -53,7 +59,11 @@ export function AddPasswordForm({ setIsShow }: { setIsShow: Dispatch<SetStateAct
     })
 
     if (response2.ok) {
-      router.refresh()
+      if (recupPasswords != undefined) {
+        recupPasswords()
+      } else {
+        router.refresh()
+      }
       setIsShow(false)
       toast({
         description: "Mot de passe crée avec succes.",

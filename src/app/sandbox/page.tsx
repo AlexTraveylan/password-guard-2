@@ -77,7 +77,7 @@ export default async function SandBoxPage() {
           .map((password) => {
             return (
               <div key={password.id}>
-                <PasswordCard password={password} />
+                <PasswordCard password={password} recupPasswords={undefined} />
               </div>
             )
           })}

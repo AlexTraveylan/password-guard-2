@@ -14,7 +14,15 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { ArrowLeft, Send } from "../../../node_modules/lucide-react"
 
-export function EditPassword({ setIsEditing, password }: { setIsEditing: Dispatch<SetStateAction<boolean>>; password: PassBdd }) {
+export function EditPassword({
+  setIsEditing,
+  password,
+  recupPasswords = undefined,
+}: {
+  setIsEditing: Dispatch<SetStateAction<boolean>>
+  password: PassBdd
+  recupPasswords: undefined | (() => void)
+}) {
   const router = useRouter()
   const form = useForm<z.infer<typeof addPasswordSchema>>({
     resolver: zodResolver(addPasswordSchema),
@@ -54,7 +62,11 @@ export function EditPassword({ setIsEditing, password }: { setIsEditing: Dispatc
     })
 
     if (response2.ok) {
-      router.refresh()
+      if (recupPasswords != undefined) {
+        recupPasswords()
+      } else {
+        router.refresh()
+      }
       setIsEditing(false)
       toast({
         description: "Mot de passe modifié avec succes.",

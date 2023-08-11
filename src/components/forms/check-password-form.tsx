@@ -39,14 +39,14 @@ export function CheckPasswordForm({ userEmail }: { userEmail: string }) {
         description: "Accès autorisé pour 1h.",
       })
       router.push("/view-passwords")
+    } else {
+      const data: { error: string } = await response.json()
+      toast({
+        variant: "destructive",
+        title: "Oh, oh ! Une erreur s&aposest produite !",
+        description: `Raison : ${data.error}`,
+      })
     }
-
-    const data: { error: string } = await response.json()
-    toast({
-      variant: "destructive",
-      title: "Oh, oh ! Une erreur s&aposest produite !",
-      description: `Raison : ${data.error}`,
-    })
 
     setIsChecking(false)
   }
