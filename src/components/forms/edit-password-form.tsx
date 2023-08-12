@@ -12,7 +12,8 @@ import { useRouter } from "next/navigation"
 import { Dispatch, SetStateAction } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { ArrowLeft, Send } from "../../../node_modules/lucide-react"
+import { ArrowLeft, RefreshCw, Send } from "../../../node_modules/lucide-react"
+import { generatePassword } from "../functions/modify-password"
 
 export function EditPassword({
   setIsEditing,
@@ -32,6 +33,11 @@ export function EditPassword({
       password: "",
     },
   })
+
+  function putStrongRandomPassword() {
+    const newPassword = generatePassword()
+    form.setValue("password", newPassword)
+  }
 
   async function handleSubmit(values: z.infer<typeof addPasswordSchema>) {
     toast({
@@ -131,6 +137,11 @@ export function EditPassword({
                 className="cursor-pointer hover:text-red-800 dark:hover:text-red-400"
                 strokeWidth={1.3}
                 onClick={() => setIsEditing(false)}
+              />
+              <RefreshCw
+                strokeWidth={1.3}
+                className="cursor-pointer active:rotate-180 transition-all rotate-0"
+                onClick={putStrongRandomPassword}
               />
               <button type="submit">
                 <Send className="hover:text-green-800 dark:hover:text-green-400" type="submit" strokeWidth={1.3} />
