@@ -2,6 +2,7 @@
 
 import { AddPasswordForm } from "@/components/forms/add-password-form"
 import { PasswordCard } from "@/components/password_card"
+import { PasswordsHealthCard } from "@/components/passwords-health"
 import { PlusPasswordCard } from "@/components/plus-password-card"
 import AccessDenied from "@/components/shared/access-denied"
 import { Loader } from "@/components/shared/loader"
@@ -66,19 +67,22 @@ export default function ViewPasswordsPage() {
   }
 
   return (
-    <div className="flex flex-row gap-3 flex-wrap justify-center my-5">
-      {isAcces && passwords.length > 0 && (
-        <>
-          {passwords.map((password) => {
-            return (
-              <div key={password.id}>
-                <PasswordCard password={password} recupPasswords={recupPasswords} />
-              </div>
-            )
-          })}
-        </>
-      )}
-      {isShow ? <AddPasswordForm setIsShow={setIsShow} recupPasswords={recupPasswords} /> : <PlusPasswordCard setIsShow={setIsShow} />}
+    <div className="flex flex-col items-center">
+      <PasswordsHealthCard passBdds={passwords} />
+      <div className="flex flex-row gap-3 flex-wrap justify-center my-5">
+        {isAcces && passwords.length > 0 && (
+          <>
+            {passwords.map((password) => {
+              return (
+                <div key={password.id}>
+                  <PasswordCard password={password} recupPasswords={recupPasswords} />
+                </div>
+              )
+            })}
+          </>
+        )}
+        {isShow ? <AddPasswordForm setIsShow={setIsShow} recupPasswords={recupPasswords} /> : <PlusPasswordCard setIsShow={setIsShow} />}
+      </div>
     </div>
   )
 }

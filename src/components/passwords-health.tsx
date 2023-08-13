@@ -4,7 +4,7 @@ import { PassBdd } from "./types/types"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card"
 
 export async function PasswordsHealthCard({ passBdds }: { passBdds: PassBdd[] }) {
-  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{15,}$/
+  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{14,}$/
   const vulnerabilities: PassBdd[] = []
   const weaks: PassBdd[] = []
   for (const passBdd of passBdds) {
