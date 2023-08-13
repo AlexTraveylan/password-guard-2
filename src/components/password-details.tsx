@@ -2,7 +2,7 @@ import { PassBdd } from "@/components/types/types"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Dispatch, SetStateAction } from "react"
 import { ArrowLeft } from "../../node_modules/lucide-react"
-import { splitPassword } from "./functions/modify-password"
+import { splitPassword } from "./functions/password"
 
 export function PasswordDetail({ password, setIsShowDetail }: { password: PassBdd; setIsShowDetail: Dispatch<SetStateAction<boolean>> }) {
   const splitedPassword = splitPassword(password.password)
@@ -11,8 +11,15 @@ export function PasswordDetail({ password, setIsShowDetail }: { password: PassBd
   return (
     <Card className="w-[240px] flex flex-col justify-between">
       <CardHeader>
-        <CardTitle>{password.title}</CardTitle>
-        <CardDescription>Détails carte n°{password.id}</CardDescription>
+        <CardTitle>
+          <div>{password.title}</div>
+        </CardTitle>
+        <CardDescription className="flex flex-row justify-between">
+          <h3>Détails carte n°{password.id}</h3>
+          <div onClick={() => setIsShowDetail(false)}>
+            <ArrowLeft className="cursor-pointer hover:text-red-800 dark:hover:text-red-400" size={23} strokeWidth={1.3} />
+          </div>
+        </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-3">
         <div>
@@ -36,11 +43,7 @@ export function PasswordDetail({ password, setIsShowDetail }: { password: PassBd
           })}
         </div>
       </CardContent>
-      <CardFooter>
-        <div onClick={() => setIsShowDetail(false)}>
-          <ArrowLeft className="cursor-pointer hover:text-red-800 dark:hover:text-red-400" size={23} strokeWidth={1.3} />
-        </div>
-      </CardFooter>
+      <CardFooter></CardFooter>
     </Card>
   )
 }

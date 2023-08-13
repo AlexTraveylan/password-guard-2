@@ -14,3 +14,7 @@ export const addPasswordSchema = z.object({
   login: z.string(),
   password: z.string(),
 })
+
+export const simplePasswordSchema = z.object({
+  password: z.string(),
+})

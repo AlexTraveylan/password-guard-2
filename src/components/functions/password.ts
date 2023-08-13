@@ -1,3 +1,5 @@
+import { createHash } from "crypto"
+
 export function splitPassword(password: string, splitedPassword: string[] = []): string[] {
   if (password.length > 24) {
     splitedPassword.push(`${password.slice(0, 24)}`)
@@ -16,7 +18,7 @@ export function generatePassword(length: number = 15): string {
   const lowercaseChars = "abcdefghijklmnopqrstuvwxyz"
   const uppercaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
   const numberChars = "0123456789"
-  const specialChars = "*!$#?"
+  const specialChars = "@$!%*?&"
 
   let password = [
     lowercaseChars[Math.floor(Math.random() * lowercaseChars.length)],
@@ -34,4 +36,21 @@ export function generatePassword(length: number = 15): string {
     .split("")
     .sort(() => 0.5 - Math.random())
     .join("")
+}
+
+export async function isCompomisedPassword(password: string): Promise<boolean> {
+  const sha1 = createHash("sha1")
+  const passwordHash = sha1.update(password).digest("hex").toUpperCase()
+
+  const prefix = passwordHash.substring(0, 5)
+  const response = await fetch(`https://api.pwnedpasswords.com/range/${prefix}`)
+  const data = await response.text()
+
+  const suffixes = data.split("\r\n")
+  for (const suffix of suffixes) {
+    if (passwordHash === prefix + suffix.split(":")[0]) {
+      return true
+    }
+  }
+  return false
 }

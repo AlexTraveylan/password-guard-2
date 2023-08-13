@@ -76,7 +76,7 @@ export function PasswordCard({ password, recupPasswords = undefined }: { passwor
         </CardContent>
         <CardFooter className="flex flex-row justify-end gap-5">
           <div onClick={() => setIsEditing(true)}>
-            <PenBox strokeWidth={1.3} size={23} />
+            <PenBox strokeWidth={1.3} size={23} className="cursor-pointer" />
           </div>
           <Dialog>
             <DialogTrigger>

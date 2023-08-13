@@ -3,7 +3,7 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { toast } from "@/components/ui/use-toast"
+import { useToast } from "@/components/ui/use-toast"
 import { encryptPassword, generateAESKey, publicKeyEncrypt } from "@/services/security.service"
 import { addPasswordSchema } from "@/zod/schema.example"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -12,7 +12,7 @@ import { Dispatch, SetStateAction } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { MinusCircle, RefreshCw, Send } from "../../../node_modules/lucide-react"
-import { generatePassword } from "../functions/modify-password"
+import { generatePassword } from "../functions/password"
 
 export function AddPasswordForm({
   setIsShow,
@@ -21,6 +21,7 @@ export function AddPasswordForm({
   setIsShow: Dispatch<SetStateAction<boolean>>
   recupPasswords: undefined | (() => void)
 }) {
+  const { toast } = useToast()
   const router = useRouter()
   const form = useForm<z.infer<typeof addPasswordSchema>>({
     resolver: zodResolver(addPasswordSchema),

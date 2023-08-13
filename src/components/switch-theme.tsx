@@ -4,7 +4,7 @@ import { useTheme } from "next-themes"
 
 import { useState } from "react"
 import { Moon, Sun } from "../../node_modules/lucide-react"
-import { Switch } from "./ui/switch"
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card"
 
 export function SwitchToggle() {
   const { systemTheme, setTheme } = useTheme()
@@ -23,12 +23,18 @@ export function SwitchToggle() {
   return (
     <>
       <div className="flex items-center gap-3">
-        <Switch id="airplane-mode" onCheckedChange={toogleActualTheme} checked={actualTheme === "dark"} />
-        <div className="inline-flex items-center justify-center rounded-md text-sm font-medium">
-          <Sun className="rotate-0 scale-100 transition-all hover:text-slate-900 dark:-rotate-90 dark:scale-0 dark:text-slate-400 dark:hover:text-slate-100" />
-          <Moon className="absolute rotate-90 scale-0 transition-all hover:text-slate-900 dark:rotate-0 dark:scale-100 dark:text-slate-400 dark:hover:text-slate-100" />
-          <span className="sr-only">Toggle theme</span>
-        </div>
+        <HoverCard closeDelay={0.1}>
+          <HoverCardTrigger>
+            <div
+              className="hover:bg-slate-100 hover:dark:bg-slate-800 p-2 rounded-[50%] cursor-pointer inline-flex items-center justify-center rounded-md text-sm font-medium"
+              onClick={toogleActualTheme}
+            >
+              <Sun className="rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 dark:text-slate-400" />
+              <Moon className="absolute rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 dark:text-slate-400" />
+            </div>
+          </HoverCardTrigger>
+          <HoverCardContent>Changer light/dark mode.</HoverCardContent>
+        </HoverCard>
       </div>
     </>
   )

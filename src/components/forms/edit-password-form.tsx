@@ -13,7 +13,7 @@ import { Dispatch, SetStateAction } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { ArrowLeft, RefreshCw, Send } from "../../../node_modules/lucide-react"
-import { generatePassword } from "../functions/modify-password"
+import { generatePassword } from "../functions/password"
 
 export function EditPassword({
   setIsEditing,

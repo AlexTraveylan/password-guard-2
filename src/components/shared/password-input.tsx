@@ -2,6 +2,7 @@ import styles from "@/components/styles/password-input.module.css"
 import { Input } from "@/components/ui/input"
 import { ComponentPropsWithoutRef, useState } from "react"
 import { Eye, EyeOff } from "../../../node_modules/lucide-react"
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "../ui/hover-card"
 
 type InputProps = ComponentPropsWithoutRef<"input"> & {
   label: string
@@ -35,7 +36,18 @@ export function PasswordInput({ label, validate, validationMessage, ...props }: 
           }}
           {...props}
         />
-        <div onClick={() => setIsPasswordVisible(!isPasswordVisible)}>{isPasswordVisible ? <Eye /> : <EyeOff />}</div>
+        <HoverCard closeDelay={0.1}>
+          <HoverCardTrigger>
+            <div onClick={() => setIsPasswordVisible(!isPasswordVisible)}>
+              {isPasswordVisible ? (
+                <Eye size={40} strokeWidth={1.3} className="hover:bg-slate-100 hover:dark:bg-slate-800 p-2 rounded-[50%]" />
+              ) : (
+                <EyeOff size={40} strokeWidth={1.3} className="hover:bg-slate-100 hover:dark:bg-slate-800 p-2 rounded-[50%]" />
+              )}
+            </div>
+          </HoverCardTrigger>
+          <HoverCardContent>Cacher/voir le mot de passe</HoverCardContent>
+        </HoverCard>
       </div>
       {!isValid && (
         <p className="text-red-500 text-sm mt-1 text-center">
