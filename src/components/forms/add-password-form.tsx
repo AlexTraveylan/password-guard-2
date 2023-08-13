@@ -13,6 +13,7 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { MinusCircle, RefreshCw, Send } from "../../../node_modules/lucide-react"
 import { generatePassword } from "../functions/password"
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "../ui/hover-card"
 
 export function AddPasswordForm({
   setIsShow,
@@ -130,20 +131,38 @@ export function AddPasswordForm({
                 )}
               />
             </CardContent>
+
             <CardFooter className="flex justify-between">
-              <MinusCircle
-                className="cursor-pointer hover:text-red-800 dark:hover:text-red-400"
-                strokeWidth={1.3}
-                onClick={() => setIsShow(false)}
-              />
-              <RefreshCw
-                strokeWidth={1.3}
-                className="cursor-pointer active:rotate-180 transition-all rotate-0"
-                onClick={putStrongRandomPassword}
-              />
-              <button type="submit">
-                <Send className="hover:text-green-800 dark:hover:text-green-400" type="submit" strokeWidth={1.3} />
-              </button>
+              <HoverCard closeDelay={0.1}>
+                <HoverCardTrigger>
+                  <MinusCircle
+                    className="cursor-pointer hover:text-red-800 dark:hover:text-red-400"
+                    strokeWidth={1.3}
+                    onClick={() => setIsShow(false)}
+                  />
+                </HoverCardTrigger>
+                <HoverCardContent>Retour</HoverCardContent>
+              </HoverCard>
+
+              <HoverCard closeDelay={0.1}>
+                <HoverCardTrigger>
+                  <RefreshCw
+                    strokeWidth={1.3}
+                    className="cursor-pointer active:rotate-180 transition-all rotate-0"
+                    onClick={putStrongRandomPassword}
+                  />
+                </HoverCardTrigger>
+                <HoverCardContent>Generation d'un mot de passe fort.</HoverCardContent>
+              </HoverCard>
+
+              <HoverCard closeDelay={0.1}>
+                <HoverCardTrigger>
+                  <button type="submit">
+                    <Send className="hover:text-green-800 dark:hover:text-green-400" type="submit" strokeWidth={1.3} />
+                  </button>
+                </HoverCardTrigger>
+                <HoverCardContent>Cacher.</HoverCardContent>
+              </HoverCard>
             </CardFooter>
           </Card>
         </form>

@@ -1,14 +1,16 @@
 import { AddPasswordCard } from "@/components/add-password-card"
 import { PasswordCard } from "@/components/password_card"
+import { PasswordsHealthCard } from "@/components/passwords-health"
 import { PassBdd, encryptData } from "@/components/types/types"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { guardedPasswordService } from "@/services/GuardedPassword.service"
 import { decryptPassword, privateKeyDecrypt } from "@/services/security.service"
 import { userAppService } from "@/services/userApp.service"
 import { currentUser } from "@clerk/nextjs"
 import Image from "next/image"
 import Link from "next/link"
-import { ArrowLeft } from "../../../node_modules/lucide-react"
+import { Home } from "../../../node_modules/lucide-react"
 
 export default async function SandBoxPage() {
   const sandBoxUser = await userAppService.getByEmail("noemail@sandbox.com")
@@ -44,16 +46,20 @@ export default async function SandBoxPage() {
   return (
     <div>
       <div className="flex gap-5 flex-wrap justify-center">
-        <Image src="/coffre-sable.jpg" alt="coffre en bois dans du sable" width={240} height={240} />
         <Card className="w-[240px] min-h-[240px]">
           <CardHeader>
             <CardTitle className="flex justify-between">
               <h3>
                 Bac à sable <span className="text-xs">(partagé)</span>
               </h3>
-              <Link href="/">
-                <ArrowLeft className="hover:text-red-800 dark:hover:text-red-500 transition-colors" />
-              </Link>
+              <HoverCard closeDelay={0.1}>
+                <HoverCardTrigger>
+                  <Link href="/">
+                    <Home className="hover:text-red-800 dark:hover:text-red-500 transition-colors" />
+                  </Link>
+                </HoverCardTrigger>
+                <HoverCardContent className="font-normal">Retour accueil</HoverCardContent>
+              </HoverCard>
             </CardTitle>
             <CardDescription className="text-xs">
               Accessible aux utilisateurs non connectés pour tester les fonctionnalités de Password Guard.
@@ -62,14 +68,16 @@ export default async function SandBoxPage() {
           <CardContent>
             <h3>Règles :</h3>
             <ul>
-              <li>- Pas d'insulte</li>
-              <li>- Pas de liens</li>
+              <li className="pl-5">Pas d'insulte</li>
+              <li className="pl-5">Pas de lien</li>
             </ul>
           </CardContent>
           <CardFooter>
             <h3 className="text-xs">En développement ...</h3>
           </CardFooter>
         </Card>
+        <Image src="/coffre-sable.jpg" alt="coffre en bois dans du sable" width={240} height={240} />
+        <PasswordsHealthCard passBdds={passBdds} />
       </div>
       <div className="flex flex-row gap-3 flex-wrap justify-center my-5">
         {passBdds

@@ -25,10 +25,7 @@ export function SwitchToggle() {
       <div className="flex items-center gap-3">
         <HoverCard closeDelay={0.1}>
           <HoverCardTrigger>
-            <div
-              className="hover:bg-slate-100 hover:dark:bg-slate-800 p-2 rounded-[50%] cursor-pointer inline-flex items-center justify-center rounded-md text-sm font-medium"
-              onClick={toogleActualTheme}
-            >
+            <div className="cursor-pointer inline-flex items-center justify-center rounded-md text-sm font-medium" onClick={toogleActualTheme}>
               <Sun className="rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 dark:text-slate-400" />
               <Moon className="absolute rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 dark:text-slate-400" />
             </div>

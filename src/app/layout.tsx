@@ -21,7 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ClerkProvider>
           <body
             className={cn(
-              "font-sans min-h-screen flex flex-col dark:bg-gradient-to-r from-gray-700 dark:via-gray-900 dark:to-black",
+              "font-sans min-h-screen flex flex-col dark:bg-gradient-to-r dark:from-gray-700 dark:via-gray-900 dark:to-black",
               inter.className
             )}
           >
