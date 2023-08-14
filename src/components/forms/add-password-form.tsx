@@ -141,7 +141,7 @@ export function AddPasswordForm({
                     onClick={() => setIsShow(false)}
                   />
                 </HoverCardTrigger>
-                <HoverCardContent>Retour</HoverCardContent>
+                <HoverCardContent>Cacher le formulaire.</HoverCardContent>
               </HoverCard>
 
               <HoverCard closeDelay={0.1}>
@@ -161,7 +161,7 @@ export function AddPasswordForm({
                     <Send className="hover:text-green-800 dark:hover:text-green-400" type="submit" strokeWidth={1.3} />
                   </button>
                 </HoverCardTrigger>
-                <HoverCardContent>Cacher.</HoverCardContent>
+                <HoverCardContent>Soumettre le formulaire.</HoverCardContent>
               </HoverCard>
             </CardFooter>
           </Card>
