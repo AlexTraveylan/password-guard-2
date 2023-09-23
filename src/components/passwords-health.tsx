@@ -1,9 +1,9 @@
 "use client"
 import { useState } from "react"
 import { Radar } from "../../node_modules/lucide-react"
-import { pluralize } from "./functions/format"
-import { isCompomisedPassword } from "./functions/password"
-import { PassBdd } from "./types/types"
+import { pluralize } from "../lib/format"
+import { isCompomisedPassword } from "../lib/password"
+import { PassBdd } from "../lib/types/types"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card"
 import { useToast } from "./ui/use-toast"
 

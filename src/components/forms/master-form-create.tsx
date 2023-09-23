@@ -1,119 +1,111 @@
 "use client"
 
-import { robustTest } from "@/components/functions/validators"
-import { PasswordInput } from "@/components/shared/password-input"
+import { InputEye } from "@/components/shared/input-password-eye"
 import { Button } from "@/components/ui/Button"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
 import { toast } from "@/components/ui/use-toast"
-import { useUser } from "@clerk/nextjs"
+import { newMasterPasswordSchema } from "@/zod/schema.example"
+import { zodResolver } from "@hookform/resolvers/zod"
 import CryptoJS from "crypto-js"
-import { useRouter } from "next/navigation"
-import { useRef, useState } from "react"
-import { Lock } from "../../../node_modules/lucide-react"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
 
-export function MasterFormCreate() {
-  const { isLoaded, isSignedIn, user } = useUser()
-  const formRef = useRef<HTMLFormElement>(null)
-  const router = useRouter()
-  const [isValidForm, setIsValidForm] = useState(false)
-  const [isPaste, setIsPaste] = useState(false)
-  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{15,}$/
+export function MasterFormCreate({ setIsSignIn }: { setIsSignIn: (value: boolean) => void }) {
+  const form = useForm<z.infer<typeof newMasterPasswordSchema>>({
+    resolver: zodResolver(newMasterPasswordSchema),
+    defaultValues: {
+      email: "",
+      master: "",
+      confirm: "",
+    },
+  })
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
+  async function handleSubmit(values: z.infer<typeof newMasterPasswordSchema>) {
     toast({
       description: "Création du mot de passe master en cours ...",
     })
-    if (formRef.current) {
-      const formData = new FormData(formRef.current)
-      const master = formData.get("master")
-      const confirm = formData.get("confirm")
 
-      if (master && confirm) {
-        const isMasterSecure = regex.test(String(formData.get("master")))
-        const isConfirmEqualMaster = String(formData.get("master")) === String(formData.get("confirm"))
+    const envSalt = process.env.NEXT_PUBLIC_SUPERMASTERSALT
+    if (!envSalt) return console.error("Probleme d'env")
 
-        if (isMasterSecure && isConfirmEqualMaster) {
-          if (user?.primaryEmailAddress) {
-            const envSalt = process.env.NEXT_PUBLIC_SUPERMASTERSALT
-            if (!envSalt) return console.error("Probleme d&aposenv")
-            const supersalt = envSalt + user.primaryEmailAddress.toString()
-            const response = await fetch("api/user", {
-              method: "POST",
-              body: JSON.stringify({
-                hashMaster: CryptoJS.SHA256(supersalt + String(formData.get("master"))).toString(CryptoJS.enc.Hex),
-              }),
-            })
+    const supersalt = envSalt + values.email
+    const response = await fetch("api/user", {
+      method: "POST",
+      body: JSON.stringify({
+        hashMaster: CryptoJS.SHA256(supersalt + values.master).toString(CryptoJS.enc.Hex),
+        email: values.email,
+      }),
+    })
 
-            if (response.ok) {
-              toast({
-                description: "Réussite !",
-              })
-              router.push("/check")
-            } else {
-              const error: { error: string } = await response.json()
-              toast({
-                variant: "destructive",
-                description: `Erreur : ${error.error}`,
-              })
-            }
-          }
-        }
-      }
+    if (response.ok) {
+      toast({
+        description: "Réussite !",
+      })
+      setIsSignIn(true)
+    } else {
+      toast({
+        variant: "destructive",
+        description: "Echec !",
+      })
     }
-  }
-
-  function validationFormTest() {
-    if (formRef.current) {
-      const formData = new FormData(formRef.current)
-      const master = formData.get("master")
-      const confirm = formData.get("confirm")
-
-      if (master && confirm) {
-        const isMasterSecure = regex.test(String(formData.get("master")))
-        const isConfirmEqualMaster = String(formData.get("master")) === String(formData.get("confirm"))
-        setIsValidForm(isMasterSecure && isConfirmEqualMaster)
-      }
-    }
-  }
-
-  function samePasswordTest(password: string) {
-    if (!formRef.current) {
-      return true
-    }
-
-    const formData = new FormData(formRef.current)
-    const master = String(formData.get("master"))
-
-    return password === master
   }
 
   return (
-    <form ref={formRef} onChange={validationFormTest} onSubmit={handleSubmit} className="flex flex-col items-center">
-      <PasswordInput label="Master" name="master" validate={robustTest} validationMessage="Pas assez robuste." />
-      <PasswordInput
-        label="Confirmation"
-        name="confirm"
-        validate={samePasswordTest}
-        validationMessage="Ne correspond pas."
-        onPaste={() => setIsPaste(true)}
-      />
-
-      <Button type="submit" disabled={!isValidForm}>
-        {isValidForm ? "Commencer" : <Lock />}
-      </Button>
-      <>
-        {isValidForm && (
-          <div className="text-orange-600 text-sm mt-2 text-center max-w-xs">
-            Attention, si vous perdez ce mot de passe. Vous ne pourrez pas le modifier, ni le recuperer, ni acceder à vos eventuels futurs mots de
-            passe enregistrés sur Password Guard.
-          </div>
-        )}
-        {isPaste && (
-          <div className="text-red-600 text-sm mt-2 text-center max-w-xs">
-            DANGER : Vous avez copié votre mot de passe, soyez certain d&aposêtre capable de le réecrire avant de valider.
-          </div>
-        )}
-      </>
-    </form>
+    <Card className="min-w-[350px] w-screen max-w-[700px]">
+      <CardHeader>
+        <CardTitle>Création de ton coffre.</CardTitle>
+        <CardDescription>Créer un compte pour protéger tes mots de passe.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="master"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <InputEye {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="confirm"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <InputEye {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit">Créer ton coffre.</Button>
+          </form>
+        </Form>
+      </CardContent>
+      <CardFooter className="justify-end">
+        <div onClick={() => setIsSignIn(true)} className="cursor-pointer">
+          Déjà un coffre ? Clique ici.
+        </div>
+      </CardFooter>
+    </Card>
   )
 }

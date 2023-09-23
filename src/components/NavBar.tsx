@@ -1,8 +1,6 @@
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs"
 import Image from "next/image"
 import Link from "next/link"
 import { SwitchToggle } from "./switch-theme"
-import { Button } from "./ui/Button"
 
 export function NavBar() {
   return (
@@ -13,14 +11,6 @@ export function NavBar() {
         </Link>
         <div className="flex items-center gap-4">
           <SwitchToggle />
-          <SignedIn>
-            <UserButton afterSignOutUrl="/" userProfileUrl="/profile" />
-          </SignedIn>
-          <SignedOut>
-            <SignInButton mode="modal">
-              <Button>Sign in</Button>
-            </SignInButton>
-          </SignedOut>
         </div>
       </div>
     </nav>

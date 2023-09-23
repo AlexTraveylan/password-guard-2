@@ -1,7 +1,7 @@
 "use client"
 import { useState } from "react"
 import { Undo2 } from "../../node_modules/lucide-react"
-import { Button } from "./ui/Button"
+import { Button } from "@/ui/Button"
 
 export function Description() {
   const [isDescrHidden, setIsDescrHidden] = useState(true)

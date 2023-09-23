@@ -1,22 +1,22 @@
 import { AddPasswordCard } from "@/components/add-password-card"
 import { PasswordCard } from "@/components/password_card"
 import { PasswordsHealthCard } from "@/components/passwords-health"
-import { PassBdd, encryptData } from "@/components/types/types"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
-import { guardedPasswordService } from "@/services/GuardedPassword.service"
-import { decryptPassword, privateKeyDecrypt } from "@/services/security.service"
-import { userAppService } from "@/services/userApp.service"
-import { currentUser } from "@clerk/nextjs"
+import { currentUser } from "@/lib/hooks/auth"
+import { guardedPasswordService } from "@/lib/services/GuardedPassword.service"
+import { decryptPassword, privateKeyDecrypt } from "@/lib/services/security.service"
+import { userAppService } from "@/lib/services/userApp.service"
+import { PassBdd, encryptData } from "@/lib/types/types"
 import Image from "next/image"
 import Link from "next/link"
 import { Home } from "../../../node_modules/lucide-react"
 
 export default async function SandBoxPage() {
   const sandBoxUser = await userAppService.getByEmail("noemail@sandbox.com")
-  const user = await currentUser()
+  const { email } = currentUser()
 
-  if (user) {
+  if (email) {
     throw new Error("Déconnectez-vous pour utiliser la sandbox.")
   }
 
@@ -85,7 +85,7 @@ export default async function SandBoxPage() {
           .map((password) => {
             return (
               <div key={password.id}>
-                <PasswordCard password={password} recupPasswords={undefined} />
+                <PasswordCard password={password} />
               </div>
             )
           })}

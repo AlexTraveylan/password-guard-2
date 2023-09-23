@@ -3,7 +3,6 @@ import { Providers } from "@/components/Providers"
 import { Footer } from "@/components/footer"
 import { Toaster } from "@/components/ui/toaster"
 import { cn } from "@/lib/utils"
-import { ClerkProvider } from "@clerk/nextjs"
 import { Inter } from "next/font/google"
 import "./globals.css"
 
@@ -18,19 +17,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="fr" suppressHydrationWarning>
       <Providers>
-        <ClerkProvider>
-          <body
-            className={cn(
-              "font-sans min-h-screen flex flex-col dark:bg-gradient-to-r dark:from-gray-700 dark:via-gray-900 dark:to-black",
-              inter.className
-            )}
-          >
-            <NavBar />
-            <main className="flex-grow flex items-center justify-center p-5">{children}</main>
-            <Toaster />
-            <Footer />
-          </body>
-        </ClerkProvider>
+        <body
+          className={cn(
+            "font-sans min-h-screen flex flex-col dark:bg-gradient-to-r dark:from-gray-700 dark:via-gray-900 dark:to-black",
+            inter.className
+          )}
+        >
+          <NavBar />
+          <main className="flex-grow flex items-center justify-center p-5">{children}</main>
+          <Toaster />
+          <Footer />
+        </body>
       </Providers>
     </html>
   )

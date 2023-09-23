@@ -1,26 +1,18 @@
-import { userAppService } from "@/services/userApp.service"
-import { currentUser } from "@clerk/nextjs"
+import { currentUser } from "@/lib/hooks/auth"
+import { userAppService } from "@/lib/services/userApp.service"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function GET(request: NextRequest) {
-  const user = await currentUser()
-  let searchUser
-  if (user) {
-    if (!user?.primaryEmailAddressId) {
-      return NextResponse.json({ error: "Impossible de trouver l&apose-mail." }, { status: 400 })
-    }
-    const primaryEmail = user.emailAddresses.find((email) => email.id == user.primaryEmailAddressId)
-    if (!primaryEmail) {
-      return NextResponse.json({ error: "Impossible de trouver l&apose-mail." }, { status: 400 })
-    }
+  const { email } = currentUser()
 
-    searchUser = await userAppService.getByEmail(primaryEmail.emailAddress)
-  } else {
-    searchUser = await userAppService.getByEmail("noemail@sandbox.com")
+  if (!email) {
+    return NextResponse.json({ error: "Vous devez être connecté pour créer un mot de passe." }, { status: 401 })
   }
 
+  const searchUser = await userAppService.getByEmail(email)
+
   if (!searchUser) {
-    return NextResponse.json({ error: "Impossible de trouver l&aposuser." }, { status: 400 })
+    return NextResponse.json({ error: "Impossible de trouver l'utilisateur." }, { status: 400 })
   }
 
   return NextResponse.json({ message: "Acces autorisé", publicKey: searchUser.publicKey.toString("utf-8") }, { status: 200 })

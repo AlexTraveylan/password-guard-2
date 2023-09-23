@@ -1,8 +1,8 @@
 "use client"
 import CopyToClipboardButton from "@/components/clipBoardButton"
-import { PassBdd } from "@/components/types/types"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { useToast } from "@/components/ui/use-toast"
+import { PassBdd } from "@/lib/types/types"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { Eye, PenBox, Trash2 } from "../../node_modules/lucide-react"
@@ -11,7 +11,7 @@ import { PasswordDetail } from "./password-details"
 import { Button } from "./ui/Button"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog"
 
-export function PasswordCard({ password, recupPasswords = undefined }: { password: PassBdd; recupPasswords: undefined | (() => void) }) {
+export function PasswordCard({ password }: { password: PassBdd }) {
   const [isDeleting, setIsDeleting] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
   const [isShowDetail, setIsShowDetail] = useState(false)
@@ -34,11 +34,7 @@ export function PasswordCard({ password, recupPasswords = undefined }: { passwor
       toast({
         description: "Suppression effectuée avec succès.",
       })
-      if (recupPasswords != undefined) {
-        recupPasswords()
-      } else {
-        router.refresh()
-      }
+      router.refresh()
     } else {
       toast({
         variant: "destructive",
@@ -49,7 +45,7 @@ export function PasswordCard({ password, recupPasswords = undefined }: { passwor
   }
 
   if (isEditing) {
-    return <EditPassword setIsEditing={setIsEditing} password={password} recupPasswords={recupPasswords} />
+    return <EditPassword setIsEditing={setIsEditing} password={password} />
   }
 
   if (isShowDetail) {
@@ -58,7 +54,7 @@ export function PasswordCard({ password, recupPasswords = undefined }: { passwor
 
   return (
     <div key={password.id} className="relative">
-      <Card className="w-[240px] h-[240px] flex flex-col justify-between">
+      <Card className="w-[255px] h-[240px] flex flex-col justify-between">
         <CardHeader>
           <CardTitle>
             <p>{password.title}</p>

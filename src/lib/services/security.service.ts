@@ -1,4 +1,4 @@
-import { encryptData } from "@/components/types/types"
+import { encryptData } from "@/lib/types/types"
 import crypto from "crypto"
 
 // Générer une paire de clés RSA (privée et publique)

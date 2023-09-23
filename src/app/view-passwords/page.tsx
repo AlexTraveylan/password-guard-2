@@ -1,87 +1,59 @@
-"use client"
-
-import { AddPasswordForm } from "@/components/forms/add-password-form"
+import { AddPasswordCard } from "@/components/add-password-card"
 import { PasswordCard } from "@/components/password_card"
 import { PasswordsHealthCard } from "@/components/passwords-health"
-import { PlusPasswordCard } from "@/components/plus-password-card"
 import AccessDenied from "@/components/shared/access-denied"
-import { Loader } from "@/components/shared/loader"
-import { PassBdd, encryptData } from "@/components/types/types"
-import { decryptPassword, privateKeyDecrypt } from "@/services/security.service"
-import { useUser } from "@clerk/nextjs"
-import { useEffect, useState } from "react"
+import { currentUser } from "@/lib/hooks/auth"
+import { guardedPasswordService } from "@/lib/services/GuardedPassword.service"
+import { decryptPassword, privateKeyDecrypt } from "@/lib/services/security.service"
+import { userAppService } from "@/lib/services/userApp.service"
+import { PassBdd, encryptData } from "@/lib/types/types"
 
-export default function ViewPasswordsPage() {
-  const { isLoaded, isSignedIn, user } = useUser()
-  const [isLoading, setIsLoading] = useState(true)
-  const [isAcces, setIsAcces] = useState(false)
-  const [isShow, setIsShow] = useState(false)
-  const [passwords, setPasswords] = useState<PassBdd[]>([])
+export default async function ViewPasswordsPage() {
+  const { email, privateKey } = currentUser()
 
-  async function checkIsUserLogged() {
-    const response = await fetch("api/user")
-    if (response.ok) {
-      setIsAcces(true)
-      recupPasswords()
-    }
-    setIsLoading(false)
+  if (!email) return <AccessDenied />
+  if (!privateKey) throw new Error("Pas de clé privée")
+
+  const privateKeyBuffer = Buffer.from(privateKey, "utf-8")
+
+  const cUser = await userAppService.getByEmail(email)
+  if (!cUser) {
+    throw new Error("Impossible de trouver l'utilisateur.")
   }
 
-  async function recupPasswords() {
-    const privateKey = localStorage.getItem("privateKey")
-    if (!privateKey) return
-    const response = await fetch("api/passwords")
-    if (!response.ok) return
+  const passwords = await guardedPasswordService.getAllGuardedPasswordByUserID(cUser.id)
+  if (!passwords) {
+    throw new Error("Echec dans la récupération des mots de passe.")
+  }
 
-    const data = await response.json()
+  const passBdds: PassBdd[] = []
 
-    const privateKeyBuffer = Buffer.from(privateKey, "utf-8")
-
-    const passBdds: PassBdd[] = []
-
-    for (const password of data.passwords) {
-      const encryptedData: encryptData = {
-        iv: password.iv,
-        encryptedPassword: Buffer.from(password.password, "hex").toString("hex"),
-      }
-
-      const decryptedAESKey = privateKeyDecrypt(Buffer.from(password.encryptedAESKey, "base64"), privateKeyBuffer)
-      const decryptedPassword = decryptPassword(encryptedData, decryptedAESKey)
-
-      passBdds.push({ id: password.id, title: password.title, login: password.login, password: decryptedPassword })
+  for (const password of passwords) {
+    const encryptedData: encryptData = {
+      iv: password.iv,
+      encryptedPassword: password.password.toString("hex"),
     }
 
-    setPasswords(passBdds)
-  }
+    const decryptedAESKey = privateKeyDecrypt(password.encryptedAESKey, privateKeyBuffer)
+    const decryptedPassword = decryptPassword(encryptedData, decryptedAESKey)
 
-  useEffect(() => {
-    checkIsUserLogged()
-  }, [isShow])
-
-  if (isLoading) {
-    return <Loader />
-  }
-
-  if (!user || !isAcces) {
-    return <AccessDenied />
+    passBdds.push({ id: password.id, title: password.title, login: password.login, password: decryptedPassword })
   }
 
   return (
     <div className="flex flex-col items-center">
-      <PasswordsHealthCard passBdds={passwords} />
+      <PasswordsHealthCard passBdds={passBdds} />
       <div className="flex flex-row gap-3 flex-wrap justify-center my-5">
-        {isAcces && passwords.length > 0 && (
-          <>
-            {passwords.map((password) => {
-              return (
-                <div key={password.id}>
-                  <PasswordCard password={password} recupPasswords={recupPasswords} />
-                </div>
-              )
-            })}
-          </>
-        )}
-        {isShow ? <AddPasswordForm setIsShow={setIsShow} recupPasswords={recupPasswords} /> : <PlusPasswordCard setIsShow={setIsShow} />}
+        {passBdds
+          .sort((a, b) => a.id - b.id)
+          .map((password) => {
+            return (
+              <div key={password.id}>
+                <PasswordCard password={password} />
+              </div>
+            )
+          })}
+        <AddPasswordCard />
       </div>
     </div>
   )

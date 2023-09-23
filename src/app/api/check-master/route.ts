@@ -1,30 +1,20 @@
-import { generateAccessToken, generateRefreshToken } from "@/services/auth.service"
-import { userAppService } from "@/services/userApp.service"
-import { currentUser } from "@clerk/nextjs"
+import { generateAccessToken, generateRefreshToken } from "@/lib/services/auth.service"
+import { userAppService } from "@/lib/services/userApp.service"
 import bcrypt from "bcrypt"
 import { cookies } from "next/headers"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function POST(request: NextRequest) {
-  const user = await currentUser()
+  const { clientHashedMaster, email } = await request.json()
 
-  if (!user?.primaryEmailAddressId) {
-    return NextResponse.json({ error: "Impossible de trouver l&apose-mail." }, { status: 400 })
-  }
-  const primaryEmail = user.emailAddresses.find((email) => email.id == user.primaryEmailAddressId)
-  if (!primaryEmail) {
-    return NextResponse.json({ error: "Impossible de trouver l&apose-mail." }, { status: 400 })
-  }
-
-  const searchUser = await userAppService.getByEmail(primaryEmail.emailAddress)
+  const searchUser = await userAppService.getByEmail(email)
 
   if (!searchUser) {
-    return NextResponse.json({ error: "Impossible de trouver l&aposutilisateur.." }, { status: 400 })
+    return NextResponse.json({ error: "Impossible de trouver l'utilisateur.." }, { status: 400 })
   }
 
   const salt = searchUser.salt
   const masterPassword = searchUser.masterPassword
-  const { clientHashedMaster } = await request.json()
   const clientDoubleHashedMaster = await bcrypt.hash(clientHashedMaster, salt)
   const clientDoubleHashedMasterBuffer = Buffer.from(clientDoubleHashedMaster)
 
@@ -32,9 +22,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Le mot de passe est incorrect." }, { status: 400 })
   }
 
-  const accessToken = generateAccessToken(primaryEmail.emailAddress)
-  const refreshToken = generateRefreshToken(primaryEmail.emailAddress)
-  const privateKey = searchUser.privateKey.toString("utf-8")
+  const accessToken = generateAccessToken(email, searchUser.privateKey.toString("utf-8"))
+  const refreshToken = generateRefreshToken(email, searchUser.privateKey.toString("utf-8"))
 
   const cookieHeaders = cookies()
   cookieHeaders.set("accessToken", accessToken, {
@@ -53,5 +42,5 @@ export async function POST(request: NextRequest) {
     path: "/",
   })
 
-  return NextResponse.json({ message: "Correspondance ok", privateKey: privateKey })
+  return NextResponse.json({ message: "Correspondance ok" })
 }

@@ -1,8 +1,8 @@
-import styles from "@/components/styles/password-input.module.css"
 import { Input } from "@/components/ui/input"
+import styles from "@/styles/password-input.module.css"
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/ui/hover-card"
 import { ComponentPropsWithoutRef, useState } from "react"
 import { Eye, EyeOff } from "../../../node_modules/lucide-react"
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "../ui/hover-card"
 
 type InputProps = ComponentPropsWithoutRef<"input"> & {
   label: string

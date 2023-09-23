@@ -1,7 +1,7 @@
 "use client"
 import { Key, User } from "../../node_modules/lucide-react"
 import { useState } from "react"
-import { Button } from "./ui/Button"
+import { Button } from "@/ui/Button"
 
 export function CopyToClipboardButton({ password, btnType }: { password: string; btnType: "user" | "password" }) {
   const [isCopied, setIsCopied] = useState(false)

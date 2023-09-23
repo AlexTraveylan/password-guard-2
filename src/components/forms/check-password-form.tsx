@@ -1,40 +1,49 @@
 "use client"
-import { PasswordInput } from "@/components/shared/password-input"
+import { InputEye } from "@/components/shared/input-password-eye"
 import { Button } from "@/components/ui/Button"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
 import { useToast } from "@/components/ui/use-toast"
+import { checkMasterPasswordSchema } from "@/zod/schema.example"
+import { zodResolver } from "@hookform/resolvers/zod"
 import CryptoJS from "crypto-js"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
 
-export function CheckPasswordForm({ userEmail }: { userEmail: string }) {
-  const [isChecking, setIsChecking] = useState(false)
+export function CheckPasswordForm({ setIsSignIn }: { setIsSignIn: (value: boolean) => void }) {
   const { toast } = useToast()
   const router = useRouter()
 
-  async function checkPassword(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    setIsChecking(true)
+  const form = useForm<z.infer<typeof checkMasterPasswordSchema>>({
+    resolver: zodResolver(checkMasterPasswordSchema),
+    defaultValues: {
+      email: "",
+      master: "",
+    },
+  })
+
+  async function checkPassword(values: z.infer<typeof checkMasterPasswordSchema>) {
     toast({
       description: "Vérification du mot de passe en cours ...",
     })
-    const formData = new FormData(event.target as HTMLFormElement)
     const envSalt = process.env.NEXT_PUBLIC_SUPERMASTERSALT
-    if (!envSalt) return console.error("Probleme d&aposenv")
-    const supersalt = envSalt + userEmail
+    if (!envSalt) return console.error("Probleme d'env")
 
-    const hashedMaster = CryptoJS.SHA256(supersalt + String(formData.get("master"))).toString(CryptoJS.enc.Hex)
+    const supersalt = envSalt + values.email
+
+    const hashedMaster = CryptoJS.SHA256(supersalt + values.master).toString(CryptoJS.enc.Hex)
 
     const response = await fetch("api/check-master", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ clientHashedMaster: hashedMaster }),
+      body: JSON.stringify({ clientHashedMaster: hashedMaster, email: values.email }),
     })
 
     if (response.ok) {
-      const data: { message: string; privateKey: string } = await response.json()
-      localStorage.setItem("privateKey", data.privateKey)
       toast({
         description: "Accès autorisé pour 1h.",
       })
@@ -43,20 +52,54 @@ export function CheckPasswordForm({ userEmail }: { userEmail: string }) {
       const data: { error: string } = await response.json()
       toast({
         variant: "destructive",
-        title: "Oh, oh ! Une erreur s&aposest produite !",
+        title: "Oh, oh ! Une erreur s'est produite !",
         description: `Raison : ${data.error}`,
       })
     }
-
-    setIsChecking(false)
   }
 
   return (
-    <form onSubmit={checkPassword} className="flex flex-col items-center gap-3 mt-5">
-      <PasswordInput label="Master" name="master" />
-      <Button className="mt-1" type="submit" disabled={isChecking}>
-        Déverouiller
-      </Button>
-    </form>
+    <Card className="min-w-[350px] w-screen max-w-[700px]">
+      <CardHeader>
+        <CardTitle>Déverouille ton coffre.</CardTitle>
+        <CardDescription>Accède à tes mots de passe.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(checkPassword)} className="space-y-8">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="master"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <InputEye {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit">Dévérouille ton coffre.</Button>
+          </form>
+        </Form>
+      </CardContent>
+      <CardFooter className="justify-end">
+        <div onClick={() => setIsSignIn(false)} className="cursor-pointer">
+          Pas encore de coffre ? Clique ici.
+        </div>
+      </CardFooter>
+    </Card>
   )
 }

@@ -3,8 +3,8 @@ import { simplePasswordSchema } from "@/zod/schema.example"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { isCompomisedPassword } from "./functions/password"
-import { useTimedMessage } from "./hooks/timed-message"
+import { useTimedMessage } from "../lib/hooks/timed-message"
+import { isCompomisedPassword } from "../lib/password"
 import { InputEye } from "./shared/input-password-eye"
 import { Button } from "./ui/Button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card"
@@ -53,7 +53,7 @@ export function PwnedPassword() {
                 <FormItem>
                   <FormLabel>Mot de passe à vérifier</FormLabel>
                   <FormControl>
-                    <InputEye field={field} />
+                    <InputEye {...field} />
                   </FormControl>
                 </FormItem>
               )}

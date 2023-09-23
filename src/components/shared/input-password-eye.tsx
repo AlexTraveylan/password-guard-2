@@ -1,26 +1,18 @@
-import { useState } from "react"
-import { ControllerRenderProps } from "react-hook-form"
-import { Eye, EyeOff } from "../../../node_modules/lucide-react"
-import { Input } from "../ui/input"
+"use client"
 
-export function InputEye({
-  field,
-}: {
-  field: ControllerRenderProps<
-    {
-      password: string
-    },
-    "password"
-  >
-}) {
+import React, { useState } from "react"
+import { Eye, EyeOff } from "../../../node_modules/lucide-react"
+import { Input, InputProps } from "../ui/input"
+
+export const InputEye = React.forwardRef<HTMLInputElement, InputProps>(({ className, type, ...props }, ref) => {
   const [isShowPassword, setIsShowPassword] = useState(false)
 
   return (
     <div className="relative">
-      <Input type={isShowPassword ? "text" : "password"} {...field} className="pr-10" />
-      <span className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointers" onClick={() => setIsShowPassword(!isShowPassword)}>
+      <Input type={isShowPassword ? "text" : "password"} {...props} className="pr-10" ref={ref} />
+      <span className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer" onClick={() => setIsShowPassword(!isShowPassword)}>
         {isShowPassword ? <Eye strokeWidth={1.3} size={23} /> : <EyeOff strokeWidth={1.3} size={23} />}
       </span>
     </div>
   )
-}
+})

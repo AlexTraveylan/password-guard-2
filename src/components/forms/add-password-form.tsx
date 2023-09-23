@@ -2,9 +2,11 @@
 
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { Input } from "@/components/ui/input"
 import { useToast } from "@/components/ui/use-toast"
-import { encryptPassword, generateAESKey, publicKeyEncrypt } from "@/services/security.service"
+import { generatePassword } from "@/lib/password"
+import { encryptPassword, generateAESKey, publicKeyEncrypt } from "@/lib/services/security.service"
 import { addPasswordSchema } from "@/zod/schema.example"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "next/navigation"
@@ -12,8 +14,6 @@ import { Dispatch, SetStateAction } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { MinusCircle, RefreshCw, Send } from "../../../node_modules/lucide-react"
-import { generatePassword } from "../functions/password"
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "../ui/hover-card"
 
 export function AddPasswordForm({
   setIsShow,
@@ -85,7 +85,7 @@ export function AddPasswordForm({
   }
 
   return (
-    <div className="w-[240px] h-[240px]">
+    <div className="w-[255px] h-[240px]">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)}>
           <Card>

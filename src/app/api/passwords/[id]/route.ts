@@ -1,41 +1,19 @@
-import { guardedPasswordService } from "@/services/GuardedPassword.service"
-import { verifyAccessToken } from "@/services/auth.service"
-import { userAppService } from "@/services/userApp.service"
-import { currentUser } from "@clerk/nextjs"
-import { cookies } from "next/headers"
+import { currentUser } from "@/lib/hooks/auth"
+import { guardedPasswordService } from "@/lib/services/GuardedPassword.service"
+import { userAppService } from "@/lib/services/userApp.service"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
-  const user = await currentUser()
-  let cUser
-  if (user) {
-    if (!user?.primaryEmailAddressId) {
-      return NextResponse.json({ error: "Impossible de trouver l'e-mail." }, { status: 400 })
-    }
+  const { email } = currentUser()
 
-    const primaryEmail = user.emailAddresses.find((email) => email.id == user.primaryEmailAddressId)
-    if (!primaryEmail) {
-      return NextResponse.json({ error: "Impossible de trouver l'apose-mail." }, { status: 400 })
-    }
-
-    const cookieStore = cookies()
-    const accessToken = cookieStore.get("accessToken")
-    if (!accessToken) {
-      return NextResponse.json({ error: "Pas de token d'acces dans les cookies." }, { status: 400 })
-    }
-    try {
-      const decoded = verifyAccessToken(accessToken.value)
-    } catch (err) {
-      return NextResponse.json({ error: "Le token n'est pas valide ou à expiré." }, { status: 400 })
-    }
-
-    cUser = await userAppService.getByEmail(primaryEmail.emailAddress)
-  } else {
-    cUser = await userAppService.getByEmail("noemail@sandbox.com")
+  if (!email) {
+    return NextResponse.json({ error: "Vous devez être connecté pour supprimer un mot de passe." }, { status: 401 })
   }
 
+  const cUser = await userAppService.getByEmail(email)
+
   if (!cUser) {
-    return NextResponse.json({ error: "Impossible de trouver l'user." }, { status: 400 })
+    return NextResponse.json({ error: "Impossible de trouver l'utilisateur." }, { status: 400 })
   }
 
   if (!params.id) {
@@ -53,36 +31,16 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
 }
 
 export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
-  const user = await currentUser()
-  let cUser
-  if (user) {
-    if (!user?.primaryEmailAddressId) {
-      return NextResponse.json({ error: "Impossible de trouver l'e-mail." }, { status: 400 })
-    }
+  const { email } = await currentUser()
 
-    const primaryEmail = user.emailAddresses.find((email) => email.id == user.primaryEmailAddressId)
-    if (!primaryEmail) {
-      return NextResponse.json({ error: "Impossible de trouver l'apose-mail." }, { status: 400 })
-    }
-
-    const cookieStore = cookies()
-    const accessToken = cookieStore.get("accessToken")
-    if (!accessToken) {
-      return NextResponse.json({ error: "Pas de token d'acces dans les cookies." }, { status: 400 })
-    }
-    try {
-      const decoded = verifyAccessToken(accessToken.value)
-    } catch (err) {
-      return NextResponse.json({ error: "Le token n'est pas valide ou à expiré." }, { status: 400 })
-    }
-
-    cUser = await userAppService.getByEmail(primaryEmail.emailAddress)
-  } else {
-    cUser = await userAppService.getByEmail("noemail@sandbox.com")
+  if (!email) {
+    return NextResponse.json({ error: "Vous devez être connecté pour supprimer un mot de passe." }, { status: 401 })
   }
 
+  const cUser = await userAppService.getByEmail(email)
+
   if (!cUser) {
-    return NextResponse.json({ error: "Impossible de trouver l'user." }, { status: 400 })
+    return NextResponse.json({ error: "Impossible de trouver l'utilisateur." }, { status: 400 })
   }
 
   if (!params.id) {

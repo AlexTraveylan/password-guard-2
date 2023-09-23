@@ -1,15 +1,15 @@
-import { PassBdd } from "@/components/types/types"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { splitPassword } from "@/lib/password"
+import { PassBdd } from "@/lib/types/types"
 import { Dispatch, SetStateAction } from "react"
 import { ArrowLeft } from "../../node_modules/lucide-react"
-import { splitPassword } from "./functions/password"
 
 export function PasswordDetail({ password, setIsShowDetail }: { password: PassBdd; setIsShowDetail: Dispatch<SetStateAction<boolean>> }) {
   const splitedPassword = splitPassword(password.password)
   const splitedLogin = splitPassword(password.login)
 
   return (
-    <Card className="w-[240px] flex flex-col justify-between">
+    <Card className="w-[255px] flex flex-col justify-between">
       <CardHeader>
         <CardTitle>
           <div>{password.title}</div>

@@ -1,9 +1,9 @@
 "use client"
 
+import { Button } from "@/components/ui/Button"
+import { useToast } from "@/components/ui/use-toast"
+import { PassBdd } from "@/lib/types/types"
 import { useRouter } from "next/navigation"
-import { PassBdd } from "./types/types"
-import { Button } from "./ui/Button"
-import { useToast } from "./ui/use-toast"
 
 export function DeletePasswordCard({ password }: { password: PassBdd }) {
   const { toast } = useToast()

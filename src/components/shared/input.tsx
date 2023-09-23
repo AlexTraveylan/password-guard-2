@@ -1,4 +1,4 @@
-import { InputProps } from "@/components/types/types"
+import { InputProps } from "@/lib/types/types"
 
 export function Input({ label, ...props }: InputProps) {
   return (

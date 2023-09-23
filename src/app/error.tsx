@@ -10,7 +10,7 @@ export default function Error({ error, reset }: { error: Error; reset: () => voi
 
   return (
     <div className="text-center flex flex-col gap-3">
-      <h1>{error.message}</h1>
+      <div>{error.message}</div>
       <Image src="/voleur.jpg" width={700} height={700} alt="Voleur assomé, coffre intact." />
     </div>
   )

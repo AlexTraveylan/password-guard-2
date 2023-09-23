@@ -1,11 +1,12 @@
 "use client"
 
-import { PassBdd } from "@/components/types/types"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { toast } from "@/components/ui/use-toast"
-import { encryptPassword, generateAESKey, publicKeyEncrypt } from "@/services/security.service"
+import { generatePassword } from "@/lib/password"
+import { encryptPassword, generateAESKey, publicKeyEncrypt } from "@/lib/services/security.service"
+import { PassBdd } from "@/lib/types/types"
 import { addPasswordSchema } from "@/zod/schema.example"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "next/navigation"
@@ -13,17 +14,8 @@ import { Dispatch, SetStateAction } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { ArrowLeft, RefreshCw, Send } from "../../../node_modules/lucide-react"
-import { generatePassword } from "../functions/password"
 
-export function EditPassword({
-  setIsEditing,
-  password,
-  recupPasswords = undefined,
-}: {
-  setIsEditing: Dispatch<SetStateAction<boolean>>
-  password: PassBdd
-  recupPasswords: undefined | (() => void)
-}) {
+export function EditPassword({ setIsEditing, password }: { setIsEditing: Dispatch<SetStateAction<boolean>>; password: PassBdd }) {
   const router = useRouter()
   const form = useForm<z.infer<typeof addPasswordSchema>>({
     resolver: zodResolver(addPasswordSchema),
@@ -68,11 +60,7 @@ export function EditPassword({
     })
 
     if (response2.ok) {
-      if (recupPasswords != undefined) {
-        recupPasswords()
-      } else {
-        router.refresh()
-      }
+      router.refresh()
       setIsEditing(false)
       toast({
         description: "Mot de passe modifié avec succes.",
@@ -86,7 +74,7 @@ export function EditPassword({
   }
 
   return (
-    <div className="w-[240px] h-[240px]">
+    <div className="w-[255px] h-[240px]">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)}>
           <Card>
