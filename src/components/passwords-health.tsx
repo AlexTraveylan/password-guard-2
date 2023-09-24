@@ -1,11 +1,11 @@
 "use client"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { useToast } from "@/components/ui/use-toast"
+import { pluralize } from "@/lib/format"
+import { isCompomisedPassword } from "@/lib/password"
+import { PassBdd } from "@/lib/types/types"
 import { useState } from "react"
 import { Radar } from "../../node_modules/lucide-react"
-import { pluralize } from "../lib/format"
-import { isCompomisedPassword } from "../lib/password"
-import { PassBdd } from "../lib/types/types"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card"
-import { useToast } from "./ui/use-toast"
 
 export function PasswordsHealthCard({ passBdds }: { passBdds: PassBdd[] }) {
   const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{14,}$/

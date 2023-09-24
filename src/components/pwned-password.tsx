@@ -38,7 +38,7 @@ export function PwnedPassword() {
   }
 
   return (
-    <Card>
+    <Card className="min-w-[350px] w-screen max-w-[700px]">
       <CardHeader>
         <CardTitle>Vérification d'un mot de passe</CardTitle>
         <CardDescription>Est-il compromis lors une fuite de donnée ?</CardDescription>

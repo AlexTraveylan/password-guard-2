@@ -32,7 +32,7 @@ export function GeneratePasswordCard() {
         <CardDescription>
           Génére automatiquement un mot de passe avec 15 caractères aléatoires dont 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial.
         </CardDescription>
-        <CardContent className="flex flex-col gap-5 items-center">
+        <CardContent className="flex flex-col gap-5 items-center pt-3">
           <div className="flex gap-5">
             <code className="text-sm">{password}</code>
             <Copy size={19.0} className="cursor-pointer active:scale-110" onClick={() => copyToClipboard()} />

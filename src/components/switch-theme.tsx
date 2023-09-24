@@ -2,9 +2,9 @@
 
 import { useTheme } from "next-themes"
 
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { useState } from "react"
 import { Moon, Sun } from "../../node_modules/lucide-react"
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card"
 
 export function SwitchToggle() {
   const { systemTheme, setTheme } = useTheme()

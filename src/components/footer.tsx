@@ -1,4 +1,4 @@
-export function Footer() {
+export async function Footer() {
   const date = new Date()
   const year = date.getFullYear()
   const mouth = date.toLocaleString("fr-fr", { month: "long" })

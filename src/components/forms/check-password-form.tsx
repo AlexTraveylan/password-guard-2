@@ -2,7 +2,7 @@
 import { InputEye } from "@/components/shared/input-password-eye"
 import { Button } from "@/components/ui/Button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useToast } from "@/components/ui/use-toast"
 import { checkMasterPasswordSchema } from "@/zod/schema.example"
@@ -72,6 +72,7 @@ export function CheckPasswordForm({ setIsSignIn }: { setIsSignIn: (value: boolea
               name="email"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -84,6 +85,7 @@ export function CheckPasswordForm({ setIsSignIn }: { setIsSignIn: (value: boolea
               name="master"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>Mot de passe</FormLabel>
                   <FormControl>
                     <InputEye {...field} />
                   </FormControl>

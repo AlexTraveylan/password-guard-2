@@ -1,7 +1,7 @@
 "use client"
-import { Key, User } from "../../node_modules/lucide-react"
-import { useState } from "react"
 import { Button } from "@/ui/Button"
+import { useState } from "react"
+import { Key, User } from "../../node_modules/lucide-react"
 
 export function CopyToClipboardButton({ password, btnType }: { password: string; btnType: "user" | "password" }) {
   const [isCopied, setIsCopied] = useState(false)
@@ -11,7 +11,6 @@ export function CopyToClipboardButton({ password, btnType }: { password: string;
       await navigator.clipboard.writeText(password)
       setIsCopied(true)
 
-      // Réinitialiser l'état après un certain temps
       setTimeout(() => {
         setIsCopied(false)
       }, 10000)

@@ -19,7 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <Providers>
         <body
           className={cn(
-            "font-sans min-h-screen flex flex-col dark:bg-gradient-to-r dark:from-gray-700 dark:via-gray-900 dark:to-black",
+            "font-sans min-h-screen flex flex-col dark:bg-gradient-to-r dark:from-gray-800 dark:via-gray-900 dark:to-black",
             inter.className
           )}
         >

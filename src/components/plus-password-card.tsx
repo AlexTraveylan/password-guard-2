@@ -1,7 +1,7 @@
+import { Card } from "@/components/ui/card"
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { Dispatch, SetStateAction } from "react"
 import { PlusCircleIcon } from "../../node_modules/lucide-react"
-import { Card } from "./ui/card"
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card"
 
 export function PlusPasswordCard({ setIsShow }: { setIsShow: Dispatch<SetStateAction<boolean>> }) {
   return (

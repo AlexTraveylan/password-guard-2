@@ -13,7 +13,7 @@ export const useTimedMessage = (): [message: string | undefined, pushMessage: (m
 
     timeoutRef.current = setTimeout(() => {
       setMessage(undefined)
-    }, 2000)
+    }, 5000)
   }
 
   useEffect(() => {
