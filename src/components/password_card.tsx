@@ -56,11 +56,9 @@ export function PasswordCard({ password }: { password: PassBdd }) {
     <div key={password.id} className="relative">
       <Card className="w-[255px] h-[240px] flex flex-col justify-between">
         <CardHeader>
-          <CardTitle>
-            <p>{password.title}</p>
-          </CardTitle>
+          <CardTitle>{password.title}</CardTitle>
           <CardDescription className="flex flex-row justify-between">
-            <p>Carte n°{password.id}</p>
+            <div>Carte n°{password.id}</div>
             <div onClick={() => setIsShowDetail(true)}>
               <Eye className="cursor-pointer" strokeWidth={1.3} size={23} />
             </div>
