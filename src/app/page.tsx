@@ -12,7 +12,7 @@ export default async function Home() {
       <SignInUp />
       <GeneratePasswordCard />
       <PwnedPassword />
-      {email && <SandBoxCard />}
+      {!email && <SandBoxCard />}
     </div>
   )
 }
