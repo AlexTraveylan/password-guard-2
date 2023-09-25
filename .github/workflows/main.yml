@@ -15,11 +15,10 @@ jobs:
         node-version: [16.x]
 
     env:
-      NEXT_PUBLIC_SUPERMASTERSALT: ${{ secrets.NEXT_PUBLIC_SUPERMASTERSALT }}
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      JWT_SECRET: ${{ secrets.JWT_SECRET }}
-      JWT_REFRESH_SECRET: ${{ secrets.JWT_REFRESH_SECRET }}
-
+      NEXT_PUBLIC_SUPERMASTERSALT: "abcefgh"
+      DATABASE_URL: "abcefgh"
+      JWT_SECRET: "abcefgh"
+      JWT_REFRESH_SECRET: "abcefgh"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
