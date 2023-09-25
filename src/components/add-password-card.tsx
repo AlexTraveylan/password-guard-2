@@ -6,5 +6,5 @@ import { PlusPasswordCard } from "./plus-password-card"
 
 export function AddPasswordCard() {
   const [isShow, setIsShow] = useState(false)
-  return <>{isShow ? <AddPasswordForm setIsShow={setIsShow} recupPasswords={undefined} /> : <PlusPasswordCard setIsShow={setIsShow} />}</>
+  return <>{isShow ? <AddPasswordForm setIsShow={setIsShow} /> : <PlusPasswordCard setIsShow={setIsShow} />}</>
 }
