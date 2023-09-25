@@ -12,18 +12,18 @@ export default async function ViewPasswordsPage() {
   const { email, privateKey } = currentUser()
 
   if (!email) return <AccessDenied />
-  if (!privateKey) throw new Error("Pas de clé privée")
+  if (!privateKey) throw new Error("Erreur.")
 
   const privateKeyBuffer = Buffer.from(privateKey, "utf-8")
 
   const cUser = await userAppService.getByEmail(email)
   if (!cUser) {
-    throw new Error("Impossible de trouver l'utilisateur.")
+    throw new Error("Erreur.")
   }
 
   const passwords = await guardedPasswordService.getAllGuardedPasswordByUserID(cUser.id)
   if (!passwords) {
-    throw new Error("Echec dans la récupération des mots de passe.")
+    throw new Error("Erreur.")
   }
 
   const passBdds: PassBdd[] = []

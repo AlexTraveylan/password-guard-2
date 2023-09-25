@@ -44,7 +44,7 @@ export function PasswordsHealthCard({ passBdds }: { passBdds: PassBdd[] }) {
     <Card>
       <CardHeader>
         <CardTitle className="flex justify-between">
-          <h3>Bilan de sécurité</h3>
+          <div>Bilan de sécurité</div>
           <Radar strokeWidth={1.3} size={23} onClick={findVulnerabilities} className="cursor-pointer transition-colors hover:text-green-500" />
         </CardTitle>
         <CardDescription>Check fuites et faiblesses des mdp.</CardDescription>
@@ -52,9 +52,9 @@ export function PasswordsHealthCard({ passBdds }: { passBdds: PassBdd[] }) {
       {passwordChecked && (
         <CardContent className="flex flex-col gap-2">
           <div>
-            <h3>
+            <div>
               {nbCompromised} {pluralize(nbCompromised, "mot")} de passe compromis
-            </h3>
+            </div>
             <ul>
               {vulnerabilities.map((passBdd) => (
                 <li className="text-red-700 dark:text-red-500 pl-5">
@@ -64,9 +64,9 @@ export function PasswordsHealthCard({ passBdds }: { passBdds: PassBdd[] }) {
             </ul>
           </div>
           <div>
-            <h3>
+            <div>
               {nbWeak} {pluralize(nbCompromised, "mot")} de passe {pluralize(nbCompromised, "faible")}
-            </h3>
+            </div>
             <ul>
               {weaks.map((passBdd) => (
                 <li className="text-orange-600 dark:text-orange-400 pl-5">

@@ -60,11 +60,11 @@ export function EditPassword({ setIsEditing, password }: { setIsEditing: Dispatc
     })
 
     if (response2.ok) {
-      router.refresh()
       setIsEditing(false)
       toast({
         description: "Mot de passe modifié avec succes.",
       })
+      router.refresh()
     } else {
       toast({
         variant: "destructive",

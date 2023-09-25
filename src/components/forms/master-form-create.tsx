@@ -47,7 +47,7 @@ export function MasterFormCreate({ setIsSignIn }: { setIsSignIn: (value: boolean
     } else {
       toast({
         variant: "destructive",
-        description: "Echec !",
+        description: "Une erreur s'est produite.",
       })
     }
   }

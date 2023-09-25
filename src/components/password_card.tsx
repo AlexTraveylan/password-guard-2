@@ -1,5 +1,5 @@
 "use client"
-import CopyToClipboardButton from "@/components/clipBoardButton"
+import CopyToClipboardButton from "@/components/clip-board-button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { useToast } from "@/components/ui/use-toast"
 import { PassBdd } from "@/lib/types/types"

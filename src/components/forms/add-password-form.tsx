@@ -15,13 +15,7 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { MinusCircle, RefreshCw, Send } from "../../../node_modules/lucide-react"
 
-export function AddPasswordForm({
-  setIsShow,
-  recupPasswords = undefined,
-}: {
-  setIsShow: Dispatch<SetStateAction<boolean>>
-  recupPasswords: undefined | (() => void)
-}) {
+export function AddPasswordForm({ setIsShow }: { setIsShow: Dispatch<SetStateAction<boolean>> }) {
   const { toast } = useToast()
   const router = useRouter()
   const form = useForm<z.infer<typeof addPasswordSchema>>({
@@ -49,6 +43,10 @@ export function AddPasswordForm({
 
     const response = await fetch("/api/get-public-key")
     if (!response.ok) {
+      toast({
+        description: "Une erreur s'est produite.",
+        variant: "destructive",
+      })
       return
     }
 
@@ -67,19 +65,15 @@ export function AddPasswordForm({
     })
 
     if (response2.ok) {
-      if (recupPasswords != undefined) {
-        recupPasswords()
-      } else {
-        router.refresh()
-      }
       setIsShow(false)
       toast({
         description: "Mot de passe crée avec succes.",
       })
+      router.refresh()
     } else {
       toast({
         variant: "destructive",
-        description: "Echec dans la création d&aposun nouveau mot de passe.",
+        description: "Une erreur s'est produite.",
       })
     }
   }
