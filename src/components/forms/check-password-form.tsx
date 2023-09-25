@@ -49,11 +49,9 @@ export function CheckPasswordForm({ setIsSignIn }: { setIsSignIn: (value: boolea
       })
       router.push("/view-passwords")
     } else {
-      const data: { error: string } = await response.json()
       toast({
         variant: "destructive",
         title: "Oh, oh ! Une erreur s'est produite !",
-        description: `Raison : ${data.error}`,
       })
     }
   }
