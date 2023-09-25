@@ -6,12 +6,14 @@ import { NextRequest, NextResponse } from "next/server"
 // Création d'un mot de passe
 export async function POST(request: NextRequest) {
   const { email, privateKey } = currentUser()
+  let cUser = null
 
   if (!email || !privateKey) {
-    return NextResponse.json({ error: "Vous devez être connecté pour créer un mot de passe." }, { status: 401 })
+    cUser = await userAppService.getByEmail("noemail@sandbox.com")
+  } else {
+    cUser = await userAppService.getByEmail(email)
   }
 
-  const cUser = await userAppService.getByEmail(email)
   if (!cUser) {
     return NextResponse.json({ error: "Impossible de trouver l'utilisateur." }, { status: 400 })
   }

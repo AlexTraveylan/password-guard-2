@@ -6,11 +6,13 @@ import { NextRequest, NextResponse } from "next/server"
 export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
   const { email } = currentUser()
 
-  if (!email) {
-    return NextResponse.json({ error: "Vous devez être connecté pour supprimer un mot de passe." }, { status: 401 })
-  }
+  let cUser = null
 
-  const cUser = await userAppService.getByEmail(email)
+  if (!email) {
+    cUser = await userAppService.getByEmail("noemail@sandbox.com")
+  } else {
+    cUser = await userAppService.getByEmail(email)
+  }
 
   if (!cUser) {
     return NextResponse.json({ error: "Impossible de trouver l'utilisateur." }, { status: 400 })
@@ -32,12 +34,13 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
 
 export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
   const { email } = await currentUser()
+  let cUser = null
 
   if (!email) {
-    return NextResponse.json({ error: "Vous devez être connecté pour supprimer un mot de passe." }, { status: 401 })
+    cUser = await userAppService.getByEmail("noemail@sandbox.com")
+  } else {
+    cUser = await userAppService.getByEmail(email)
   }
-
-  const cUser = await userAppService.getByEmail(email)
 
   if (!cUser) {
     return NextResponse.json({ error: "Impossible de trouver l'utilisateur." }, { status: 400 })

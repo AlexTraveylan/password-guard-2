@@ -11,8 +11,8 @@ export function PasswordsHealthCard({ passBdds }: { passBdds: PassBdd[] }) {
   const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{14,}$/
   const [vulnerabilities, setVulnerabilities] = useState<PassBdd[]>([])
   const [weaks, setWeaks] = useState<PassBdd[]>([])
-  const [nbCompromised, setNbCompromised] = useState(0)
-  const [nbWeak, setNbWeak] = useState(0)
+  const [nbCompromised, setNbCompromised] = useState(`0 mot de passe compomis`)
+  const [nbWeak, setNbWeak] = useState("0 mot de passe faible")
   const [passwordChecked, setPasswordCheacked] = useState(false)
   const { toast } = useToast()
 
@@ -22,18 +22,25 @@ export function PasswordsHealthCard({ passBdds }: { passBdds: PassBdd[] }) {
     toast({
       description: "Recherche des vulnérabilités en cours.",
     })
+
+    let nbWk = 0
+    let nbComp = 0
+
     for (const passBdd of passBdds) {
       const isNotWeak = regex.test(passBdd.password)
       if (!isNotWeak) {
         setWeaks((curr) => [...curr, passBdd])
+        nbWk++
       }
       const isCompromised = await isCompomisedPassword(passBdd.password)
       if (isCompromised) {
         setVulnerabilities((curr) => [...curr, passBdd])
+        nbComp++
       }
     }
-    setNbCompromised(vulnerabilities.length)
-    setNbWeak(weaks.length)
+
+    setNbCompromised(`${nbComp} ${pluralize(nbComp, "mot")} de passe compromis`)
+    setNbWeak(`${nbWk} ${pluralize(nbWk, "mot")} de passe ${pluralize(nbWk, "faible")}`)
     setPasswordCheacked(true)
     toast({
       description: "Recherche des vulnérabilités terminées.",
@@ -52,9 +59,7 @@ export function PasswordsHealthCard({ passBdds }: { passBdds: PassBdd[] }) {
       {passwordChecked && (
         <CardContent className="flex flex-col gap-2">
           <div>
-            <div>
-              {nbCompromised} {pluralize(nbCompromised, "mot")} de passe compromis
-            </div>
+            <div>{nbCompromised}</div>
             <ul>
               {vulnerabilities.map((passBdd) => (
                 <li className="text-red-700 dark:text-red-500 pl-5">
@@ -64,9 +69,7 @@ export function PasswordsHealthCard({ passBdds }: { passBdds: PassBdd[] }) {
             </ul>
           </div>
           <div>
-            <div>
-              {nbWeak} {pluralize(nbCompromised, "mot")} de passe {pluralize(nbCompromised, "faible")}
-            </div>
+            <div>{nbWeak}</div>
             <ul>
               {weaks.map((passBdd) => (
                 <li className="text-orange-600 dark:text-orange-400 pl-5">
