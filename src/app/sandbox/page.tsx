@@ -2,7 +2,6 @@ import { AddPasswordCard } from "@/components/add-password-card"
 import { PasswordCard } from "@/components/password_card"
 import { PasswordsHealthCard } from "@/components/passwords-health"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { currentUser } from "@/lib/hooks/auth"
 import { guardedPasswordService } from "@/lib/services/GuardedPassword.service"
 import { decryptPassword, privateKeyDecrypt } from "@/lib/services/security.service"
@@ -52,14 +51,10 @@ export default async function SandBoxPage() {
               <h3>
                 Bac à sable <span className="text-xs">(partagé)</span>
               </h3>
-              <HoverCard closeDelay={0.1}>
-                <HoverCardTrigger>
-                  <Link href="/">
-                    <Home className="hover:text-red-800 dark:hover:text-red-500 transition-colors" />
-                  </Link>
-                </HoverCardTrigger>
-                <HoverCardContent className="font-normal">Retour accueil</HoverCardContent>
-              </HoverCard>
+
+              <Link href="/">
+                <Home className="hover:text-red-800 dark:hover:text-red-500 transition-colors" />
+              </Link>
             </CardTitle>
             <CardDescription className="text-xs">
               Accessible aux utilisateurs non connectés pour tester les fonctionnalités de Password Guard.

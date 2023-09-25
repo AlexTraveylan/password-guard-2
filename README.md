@@ -1,34 +1,54 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Password Guard
 
-## Getting Started
+Password Guard is a Next.js application that allows you to create a secure password vault with a unique master password. With this application, you can create, edit, and delete your passwords. It also includes features for generating strong passwords and checking the strength of your existing passwords to ensure they are not part of data breaches. Additionally, Password Guard provides a sandbox environment for testing the application without the need for an account and features simple JWT-based authentication.
 
-First, run the development server:
+## Installation
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+To get started with Password Guard, follow these steps:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1.  Clone the repository:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+    ```bash
+    git clone git@github.com:AlexTraveylan/password-guard-2.git
+    cd password-guard-2
+    ```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+2.  Install dependencies:
 
-## Learn More
+    ```bash
+    npm install
+    ```
 
-To learn more about Next.js, take a look at the following resources:
+3.  Create a `.env` file and add the required environment variables.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+    ```bash
+    NEXT_PUBLIC_SUPERMASTERSALT=
+    DATABASE_URL=
+    JWT_SECRET=
+    JWT_REFRESH_SECRET=
+    ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+4.  Set up your relational database.
 
-## Deploy on Vercel
+5.  Start the application:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+    ```bash
+    npm run dev
+    ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Features
+
+- **Password Vault**: Create a secure vault with a unique master password.
+- **Password Management**: Add, edit, and delete passwords in the vault.
+- **Password Generator**: Generate strong and secure passwords.
+- **Password Strength Checker**: Verify password strength and check for data breaches.
+- **Sandbox Mode**: Test the application without the need for an account.
+- **JWT Authentication**: Simple JWT-based authentication for user access.
+
+## Contributing
+
+We welcome contributions! Feel free to open issues, fork the repository, and submit pull requests.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).

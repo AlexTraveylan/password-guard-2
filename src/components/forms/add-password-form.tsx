@@ -2,7 +2,6 @@
 
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { Input } from "@/components/ui/input"
 import { useToast } from "@/components/ui/use-toast"
 import { generatePassword } from "@/lib/password"
@@ -127,36 +126,21 @@ export function AddPasswordForm({ setIsShow }: { setIsShow: Dispatch<SetStateAct
             </CardContent>
 
             <CardFooter className="flex justify-between">
-              <HoverCard closeDelay={0.1}>
-                <HoverCardTrigger>
-                  <MinusCircle
-                    className="cursor-pointer hover:text-red-800 dark:hover:text-red-400"
-                    strokeWidth={1.3}
-                    onClick={() => setIsShow(false)}
-                  />
-                </HoverCardTrigger>
-                <HoverCardContent>Cacher le formulaire.</HoverCardContent>
-              </HoverCard>
+              <MinusCircle
+                className="cursor-pointer hover:text-red-800 dark:hover:text-red-400"
+                strokeWidth={1.3}
+                onClick={() => setIsShow(false)}
+              />
 
-              <HoverCard closeDelay={0.1}>
-                <HoverCardTrigger>
-                  <RefreshCw
-                    strokeWidth={1.3}
-                    className="cursor-pointer active:rotate-180 transition-all rotate-0"
-                    onClick={putStrongRandomPassword}
-                  />
-                </HoverCardTrigger>
-                <HoverCardContent>Generation d'un mot de passe fort.</HoverCardContent>
-              </HoverCard>
+              <RefreshCw
+                strokeWidth={1.3}
+                className="cursor-pointer active:rotate-180 transition-all rotate-0"
+                onClick={putStrongRandomPassword}
+              />
 
-              <HoverCard closeDelay={0.1}>
-                <HoverCardTrigger>
-                  <button type="submit">
-                    <Send className="hover:text-green-800 dark:hover:text-green-400" type="submit" strokeWidth={1.3} />
-                  </button>
-                </HoverCardTrigger>
-                <HoverCardContent>Soumettre le formulaire.</HoverCardContent>
-              </HoverCard>
+              <button type="submit">
+                <Send className="hover:text-green-800 dark:hover:text-green-400" type="submit" strokeWidth={1.3} />
+              </button>
             </CardFooter>
           </Card>
         </form>

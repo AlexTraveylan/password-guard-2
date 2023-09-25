@@ -1,5 +1,6 @@
 "use client"
 import CopyToClipboardButton from "@/components/clip-board-button"
+import { Button } from "@/components/ui/Button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { useToast } from "@/components/ui/use-toast"
 import { PassBdd } from "@/lib/types/types"
@@ -8,7 +9,6 @@ import { useState } from "react"
 import { Eye, PenBox, Trash2 } from "../../node_modules/lucide-react"
 import { EditPassword } from "./forms/edit-password-form"
 import { PasswordDetail } from "./password-details"
-import { Button } from "./ui/Button"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog"
 
 export function PasswordCard({ password }: { password: PassBdd }) {
